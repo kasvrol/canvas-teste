@@ -30,7 +30,14 @@ function App() {
         setIsDrawing(true);
     };
 
-    const drawing = () => { };
+    const drawing = (event) => {
+        if (!isDrawing) return;
+
+        const { offsetX, offsetY } = event;
+        reactCanvas.lineTo(offsetX, offsetY);
+        reactCanvas.stroke();
+    };
+
     const finishDrawing = () => {
         reactCanvas.closePath();
         setIsDrawing(false);
