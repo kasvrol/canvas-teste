@@ -20,11 +20,17 @@ function App() {
         const roughtCanvas = rough.canvas(canvas);
     }, []);
 
-    const startDrawing = (event) => { };
+    const startDrawing = (event) => {
+        setIsDrawing(true);
+    };
 
-    const drawing = (event) => { };
+    const drawing = (event) => {
+        if (!isDrawing) return;
+    };
 
-    const finishDrawing = () => { };
+    const finishDrawing = () => {
+        setIsDrawing(false);
+    };
 
     return (
         <canvas
