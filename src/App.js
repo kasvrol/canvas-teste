@@ -20,6 +20,12 @@ function App() {
         const roughtCanvas = rough.canvas(canvas)
     }, []);
 
+    const startDrawing = (event) => { };
+
+    const drawing = (event) => { };
+
+    const finishDrawing = () => { };
+
     return <canvas style={{ background: "red" }} ref={canvasRef}></canvas>;
 }
 
