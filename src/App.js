@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
 
-const generator = rough.generator()
+const generator = rough.generator();
 
 function App() {
     const canvasRef = useRef(null);
@@ -17,7 +17,7 @@ function App() {
 
         const context = canvas.getContext("2d");
         context.scale(2, 2);
-        const roughtCanvas = rough.canvas(canvas)
+        const roughtCanvas = rough.canvas(canvas);
     }, []);
 
     const startDrawing = (event) => { };
@@ -26,7 +26,15 @@ function App() {
 
     const finishDrawing = () => { };
 
-    return <canvas style={{ background: "red" }} ref={canvasRef}></canvas>;
+    return (
+        <canvas
+            style={{ background: "red" }}
+            ref={canvasRef}
+            onMouseDown={startDrawing}
+            onMouseMove={drawing}
+            onMouseUp={finishDrawing}
+        ></canvas>
+    );
 }
 
 export default App;
