@@ -21,25 +21,23 @@ function App() {
         constextRef.current = context;
     }, []);
 
-    const reactCanvas = constextRef.current;
-
     const startDrawing = (event) => {
-        const { offsetX, offsetY } = event;
-        reactCanvas.beginPath();
-        reactCanvas.moveTo(offsetX, offsetY);
+        const { clientX, clientY } = event;
+        constextRef.current.beginPath();
+        constextRef.current.moveTo(clientX, clientY);
         setIsDrawing(true);
     };
 
     const drawing = (event) => {
         if (!isDrawing) return;
 
-        const { offsetX, offsetY } = event;
-        reactCanvas.lineTo(offsetX, offsetY);
-        reactCanvas.stroke();
+        const { clientX, clientY } = event;
+        constextRef.current.lineTo(clientX, clientY);
+        constextRef.current.stroke();
     };
 
     const finishDrawing = () => {
-        reactCanvas.closePath();
+        constextRef.current.closePath();
         setIsDrawing(false);
     };
 
