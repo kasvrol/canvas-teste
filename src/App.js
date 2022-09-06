@@ -45,14 +45,48 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
+    const getElementAtPosition = (clientX, clientY, elements) => {
+        return elements.find(
+            (element) =>
+                function (clientX, clientY, element) {
+                    const { type, x0, x1, y0, y1 } = element;
+                    if (type === "square") {
+                        const minX = Math.min(x0, x1);
+                        const maxX = Math.max(x0, x1);
+                        const minY = Math.min(y0, y1);
+                        const maxY = Math.min(y0, y1);
+                        return (
+                            clientX >= minX &&
+                            clientX <= maxX &&
+                            clientY >= minY &&
+                            clientY <= maxY
+                        );
+                    } else {
+                        const a = { clientX: x0, clientY: y0 };
+                        const b = { clientX: x1, clientY: y1 };
+                        const c = { clientX, clientY };
+                        const offset =
+                            distance(a, b) - (distance(a, c) + distance(b, c));
+                        return Math.abs(offset) < 1;
+                    }
+                }
+        );
+    };
+
+    const distance = (a, b) =>
+        Math.sqrt(
+            Math.pow(a.clientX - b.clientX, 2) +
+            Math.pow(a.clientY - b.clientY, 2)
+        );
+
     const startDrawing = (event) => {
+        const { clientX, clientY } = event;
         if (elementType === "select") {
-            //move
+            const element = getElementAtPosition(clientX, clientY, elements);
         } else {
-            setAction("drawing");
-            const { clientX, clientY } = event;
             const element = createElement(clientX, clientY, clientX, clientY);
             setElements((prevState) => [...prevState, element]);
+            setAction("drawing");
         }
     };
 
