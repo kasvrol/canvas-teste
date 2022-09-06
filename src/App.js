@@ -31,7 +31,10 @@ function App() {
     };
 
     const drawing = () => { };
-    const finishDrawing = () => { };
+    const finishDrawing = () => {
+        reactCanvas.closePath();
+        setIsDrawing(false);
+    };
 
     return (
         <canvas
