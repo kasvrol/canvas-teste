@@ -45,10 +45,14 @@ function App() {
     }, [elements]);
 
     const startDrawing = (event) => {
-        setIsDrawing(true);
-        const { clientX, clientY } = event;
-        const element = createElement(clientX, clientY, clientX, clientY);
-        setElements((prevState) => [...prevState, element]);
+        if (elementType === "select") {
+            //move
+        } else {
+            setIsDrawing(true);
+            const { clientX, clientY } = event;
+            const element = createElement(clientX, clientY, clientX, clientY);
+            setElements((prevState) => [...prevState, element]);
+        }
     };
 
     const drawing = (event) => {
