@@ -17,6 +17,8 @@ function App() {
 
         const context = canvas.getContext("2d");
         context.scale(2, 2);
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
         const roughtCanvas = rough.canvas(canvas);
     }, []);
 
@@ -26,6 +28,8 @@ function App() {
 
     const drawing = (event) => {
         if (!isDrawing) return;
+
+        const { clientX, clientY } = event;
     };
 
     const finishDrawing = () => {
