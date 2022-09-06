@@ -1,5 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
+import { BsSquare, BsCircle, BsBoundingBoxCircles } from 'react-icons/bs';
+import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from 'react-icons/fa';
+
 
 const generator = rough.generator();
 
@@ -54,13 +57,33 @@ function App() {
     };
 
     return (
-        <canvas
-            style={{ background: "red" }}
-            ref={canvasRef}
-            onMouseDown={startDrawing}
-            onMouseMove={drawing}
-            onMouseUp={finishDrawing}
-        ></canvas>
+        <>
+            <div>
+                <section>
+                    <FaPen />
+                </section>
+                <section>
+                    <FaCircle />
+                </section>
+                <section>
+                    <FaSquare />
+                </section>
+                <section>
+                    <FaUndo />
+                </section>
+                <section>
+                    <FaRedo />
+                </section>
+            </div>
+            <canvas
+                style={{ background: "red" }}
+                ref={canvasRef}
+                onMouseDown={startDrawing}
+                onMouseMove={drawing}
+                onMouseUp={finishDrawing}
+            ></canvas>
+        </>
+
     );
 }
 
