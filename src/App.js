@@ -1,14 +1,25 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
-import { GrSelect } from 'react-icons/gr';
-import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from 'react-icons/fa';
-
+import { GrSelect } from "react-icons/gr";
+import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
 
 const generator = rough.generator();
 
-function createElement(x0, y0, x1, y1) {
-    const roughElement = generator.line(x0, y0, x1, y1);
-    return { x0, y0, x1, y1, roughElement };
+function createElement(x0, y0, x1, y1, elementType) {
+    switch (elementType) {
+        case "pen":
+            const roughElement = generator.line(x0, y0, x1, y1);
+            return { x0, y0, x1, y1, roughElement };
+        case "circle":
+            roughElement = generator.circle(x0, y0, x1, y1);
+            return { x0, y0, x1, y1, roughElement };
+        case "square":
+            roughElement = generator.rectangle(x0, y0, x1 - x0, y1 - y0);
+            return { x0, y0, x1, y1, roughElement };
+            break;
+        default:
+            return { x0, y0, x1, y1, roughElement };
+    }
 }
 
 function App() {
@@ -46,7 +57,13 @@ function App() {
         const { clientX, clientY } = event;
         const index = elements.length - 1;
         const { x0, y0 } = elements[index];
-        const updadeElement = createElement(x0, y0, clientX, clientY);
+        const updadeElement = createElement(
+            x0,
+            y0,
+            clientX,
+            clientY,
+            elementType
+        );
 
         const elementsCopy = [...elements];
         elementsCopy[index] = updadeElement;
@@ -59,23 +76,47 @@ function App() {
 
     return (
         <>
-            <div style={{ display: 'flex', width: '45vw', justifyContent: 'space-evenly' }}>
-                <section style={{ cursor: "pointer" }} onChange={() => setElementType("pen")}>
+            <div
+                style={{
+                    display: "flex",
+                    width: "45vw",
+                    justifyContent: "space-evenly",
+                }}
+            >
+                <section
+                    style={{ cursor: "pointer" }}
+                    onChange={() => setElementType("pen")}
+                >
                     <FaPen />
                 </section>
-                <section style={{ cursor: "pointer" }} onChange={() => setElementType("circle")}>
+                <section
+                    style={{ cursor: "pointer" }}
+                    onChange={() => setElementType("circle")}
+                >
                     <FaCircle />
                 </section>
-                <section style={{ cursor: "pointer" }} onChange={() => setElementType("square")}>
+                <section
+                    style={{ cursor: "pointer" }}
+                    onChange={() => setElementType("square")}
+                >
                     <FaSquare />
                 </section>
-                <section style={{ cursor: "pointer" }} onChange={() => setElementType("undo")}>
+                <section
+                    style={{ cursor: "pointer" }}
+                    onChange={() => setElementType("undo")}
+                >
                     <FaUndo />
                 </section>
-                <section style={{ cursor: "pointer" }} onChange={() => setElementType("redo")}>
+                <section
+                    style={{ cursor: "pointer" }}
+                    onChange={() => setElementType("redo")}
+                >
                     <FaRedo />
                 </section>
-                <section style={{ cursor: "pointer" }} onChange={() => setElementType("select")}>
+                <section
+                    style={{ cursor: "pointer" }}
+                    onChange={() => setElementType("select")}
+                >
                     <GrSelect />
                 </section>
             </div>
@@ -87,7 +128,6 @@ function App() {
                 onMouseUp={finishDrawing}
             ></canvas>
         </>
-
     );
 }
 
