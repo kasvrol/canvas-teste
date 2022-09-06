@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
-import { BsSquare, BsCircle, BsBoundingBoxCircles } from 'react-icons/bs';
+import { GrSelect } from 'react-icons/gr';
 import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from 'react-icons/fa';
 
 
@@ -15,6 +15,7 @@ function App() {
     const canvasRef = useRef(null);
     const [elements, setElements] = useState([]);
     const [isDrawing, setIsDrawing] = useState(false);
+    const [elementType, setElementType] = useState(" ");
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -59,20 +60,23 @@ function App() {
     return (
         <>
             <div>
-                <section>
+                <section onChange={() => setElementType("pen")}>
                     <FaPen />
                 </section>
-                <section>
+                <section onChange={() => setElementType("circle")}>
                     <FaCircle />
                 </section>
-                <section>
+                <section onChange={() => setElementType("square")}>
                     <FaSquare />
                 </section>
-                <section>
+                <section onChange={() => setElementType("undo")}>
                     <FaUndo />
                 </section>
-                <section>
+                <section onChange={() => setElementType("redo")}>
                     <FaRedo />
+                </section>
+                <section onChange={() => setElementType("select")}>
+                    <GrSelect />
                 </section>
             </div>
             <canvas
