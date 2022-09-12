@@ -109,7 +109,7 @@ function App() {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
             const updadeElement = createElement(
-                id,
+                index,
                 x0,
                 y0,
                 clientX,
@@ -121,7 +121,7 @@ function App() {
             elementsCopy[index] = updadeElement;
             setElements(elementsCopy);
         } else if (action === "moving") {
-            const { } = selectedElement;
+            const { id } = selectedElement;
         }
     };
 
