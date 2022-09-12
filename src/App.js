@@ -28,6 +28,7 @@ function App() {
     // const [isDrawing, setIsDrawing] = useState(false);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState(" ");
+    const [selectedElement, setSelectedElement] = useState(null);
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -83,6 +84,11 @@ function App() {
         const { clientX, clientY } = event;
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
+
+            if (element) {
+                setSelectedElement(element);
+                setAction("moving");
+            }
         } else {
             const element = createElement(clientX, clientY, clientX, clientY);
             setElements((prevState) => [...prevState, element]);
@@ -91,26 +97,31 @@ function App() {
     };
 
     const drawing = (event) => {
-        if (!action) return;
+        if (action === "drawing") {
+            const { clientX, clientY } = event;
+            const index = elements.length - 1;
+            const { x0, y0 } = elements[index];
+            const updadeElement = createElement(
+                x0,
+                y0,
+                clientX,
+                clientY,
+                elementType
+            );
 
-        const { clientX, clientY } = event;
-        const index = elements.length - 1;
-        const { x0, y0 } = elements[index];
-        const updadeElement = createElement(
-            x0,
-            y0,
-            clientX,
-            clientY,
-            elementType
-        );
+            const elementsCopy = [...elements];
+            elementsCopy[index] = updadeElement;
+            setElements(elementsCopy);
+        } else if (action === "moving") {
+            const { } = selectedElement;
+        }
 
-        const elementsCopy = [...elements];
-        elementsCopy[index] = updadeElement;
-        setElements(elementsCopy);
+
     };
 
     const finishDrawing = () => {
         setAction("none");
+        setSelectedElement(null);
     };
 
     return (
