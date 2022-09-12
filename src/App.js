@@ -5,16 +5,16 @@ import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
 
 const generator = rough.generator();
 
-function createElement(x0, y0, x1, y1, elementType) {
+function createElement(id, x0, y0, x1, y1, elementType) {
     switch (elementType) {
         case "pen":
-            const roughElement = generator.line(x0, y0, x1, y1);
+            const roughElement = generator.line(id, x0, y0, x1, y1);
             return { x0, y0, x1, y1, roughElement };
         case "circle":
-            roughElement = generator.circle(x0, y0, x1, y1);
+            roughElement = generator.circle(id, x0, y0, x1, y1);
             return { x0, y0, x1, y1, roughElement };
         case "square":
-            roughElement = generator.rectangle(x0, y0, x1 - x0, y1 - y0);
+            roughElement = generator.rectangle(id, x0, y0, x1 - x0, y1 - y0);
             return { x0, y0, x1, y1, roughElement };
             break;
         default:
@@ -90,7 +90,14 @@ function App() {
                 setAction("moving");
             }
         } else {
-            const element = createElement(clientX, clientY, clientX, clientY);
+            const id = elements.length;
+            const element = createElement(
+                id,
+                clientX,
+                clientY,
+                clientX,
+                clientY
+            );
             setElements((prevState) => [...prevState, element]);
             setAction("drawing");
         }
@@ -102,6 +109,7 @@ function App() {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
             const updadeElement = createElement(
+                id,
                 x0,
                 y0,
                 clientX,
@@ -115,8 +123,6 @@ function App() {
         } else if (action === "moving") {
             const { } = selectedElement;
         }
-
-
     };
 
     const finishDrawing = () => {
