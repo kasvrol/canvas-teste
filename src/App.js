@@ -46,6 +46,26 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
+    const updadeElement = (id,
+        x0,
+        y0,
+        x1,
+        y1,
+        type) => {
+        const updadeElement = createElement(
+            id,
+            x0,
+            y0,
+            x1,
+            y1,
+            type
+        );
+
+        const elementsCopy = [...elements];
+        elementsCopy[id] = updadeElement;
+        setElements(elementsCopy);
+    }
+
     const isWithinElement = (clientX, clientY, element) => {
         const { type, x0, x1, y0, y1 } = element;
         if (type === "square") {
@@ -108,7 +128,7 @@ function App() {
             const { clientX, clientY } = event;
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
-            const updadeElement = createElement(
+            updadeElement(
                 index,
                 x0,
                 y0,
@@ -116,10 +136,6 @@ function App() {
                 clientY,
                 elementType
             );
-
-            const elementsCopy = [...elements];
-            elementsCopy[index] = updadeElement;
-            setElements(elementsCopy);
         } else if (action === "moving") {
             const { id } = selectedElement;
         }
