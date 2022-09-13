@@ -6,7 +6,7 @@ import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
 const generator = rough.generator();
 
 function createElement(x0, y0, x1, y1, elementType) {
-    let roughElement
+    let roughElement;
     switch (elementType) {
         // case "pen":
         //     roughElement = generator.line(x0, y0, x1, y1);
@@ -46,10 +46,14 @@ function App() {
     }, [elements]);
 
     const startDrawing = (event) => {
-        setIsDrawing(true);
-        const { clientX, clientY } = event;
-        const element = createElement(clientX, clientY, clientX, clientY);
-        setElements((prevState) => [...prevState, element]);
+        if (elementType === "select") {
+            console.log(elementType);
+        } else {
+            setIsDrawing(true);
+            const { clientX, clientY } = event;
+            const element = createElement(clientX, clientY, clientX, clientY);
+            setElements((prevState) => [...prevState, element]);
+        }
     };
 
     const drawing = (event) => {
