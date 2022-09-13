@@ -45,6 +45,13 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
+    const distance = (variableOne, variableTwo) => {
+        return Math.sqrt(
+            Math.pow(variableOne.clientX - variableTwo.clientX, 2) +
+            Math.pow(variableOne.clientY - variableTwo.clientY, 2)
+        );
+    };
+
     const isWithinElement = (clientX, clientY, element) => {
         const { shape } = element.roughElement;
         const { x0, x1, y0, y1 } = element;
@@ -60,12 +67,12 @@ function App() {
                 clientY <= maxY;
             return position;
         } else {
-            const a = { clientX: x0, clientY: y0 }
-            const b = { clientX: x1, clientY: y1 }
-            const c = { clientX, clientY }
-            console.log("outro A", a);
-            console.log("outro B", b);
-            console.log("outro C", c);
+            const a = { clientX: x0, clientY: y0 };
+            const b = { clientX: x1, clientY: y1 };
+            const c = { clientX, clientY };
+            console.log(distance(a, b))
+            console.log(distance(a, c))
+            console.log(distance(b, c))
         }
     };
 
