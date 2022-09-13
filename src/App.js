@@ -86,37 +86,37 @@ function App() {
             >
                 <section
                     style={{ cursor: "pointer" }}
-                    onChange={() => setElementType("pen")}
+                    onClick={() => setElementType("pen")}
                 >
                     <FaPen />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onChange={() => setElementType("circle")}
+                    onClick={() => setElementType("circle")}
                 >
                     <FaCircle />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onChange={() => setElementType("square")}
+                    onClick={() => setElementType("square")}
                 >
                     <FaSquare />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onChange={() => setElementType("undo")}
+                    onClick={() => setElementType("undo")}
                 >
                     <FaUndo />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onChange={() => setElementType("redo")}
+                    onClick={() => setElementType("redo")}
                 >
                     <FaRedo />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onChange={() => setElementType("select")}
+                    onClick={() => setElementType("select")}
                 >
                     <GrSelect />
                 </section>
