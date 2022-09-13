@@ -27,7 +27,8 @@ function App() {
     const canvasRef = useRef(null);
     const [elements, setElements] = useState([]);
     const [action, setAction] = useState("none");
-    const [elementType, setElementType] = useState(" ");
+    const [elementType, setElementType] = useState("");
+    const [selectedElement, setSelectedElement] = useState(null);
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -60,12 +61,10 @@ function App() {
             const maxX = Math.max(x0, x1);
             const minY = Math.min(y0, y1);
             const maxY = Math.max(y0, y1);
-            const position =
-                clientX >= minX &&
+            return clientX >= minX &&
                 clientX <= maxX &&
                 clientY >= minY &&
                 clientY <= maxY;
-            return position;
         } else {
             const a = { clientX: x0, clientY: y0 };
             const b = { clientX: x1, clientY: y1 };
@@ -85,8 +84,12 @@ function App() {
         const { clientX, clientY } = event;
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
-            setAction("moving");
-            return element;
+            if (element) {
+                setSelectedElement(element)
+                setAction("moving");
+                console.log(element)
+                console.log(selectedElement)
+            }
         } else {
             setAction("drawing");
             const element = createElement(
@@ -120,6 +123,7 @@ function App() {
 
     const finishDrawing = () => {
         setAction("none");
+        setSelectedElement(null)
     };
 
     const userChoice = (element) => {
