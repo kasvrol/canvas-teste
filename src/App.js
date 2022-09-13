@@ -26,7 +26,7 @@ function createElement(x0, y0, x1, y1, elementType) {
 function App() {
     const canvasRef = useRef(null);
     const [elements, setElements] = useState([]);
-    const [isDrawing, setIsDrawing] = useState(false);
+    const [action, setAction] = useState("");
     const [elementType, setElementType] = useState(" ");
 
     useLayoutEffect(() => {
@@ -49,7 +49,7 @@ function App() {
         if (elementType === "select") {
             console.log(elementType);
         } else {
-            setIsDrawing(true);
+            setAction(true);
             const { clientX, clientY } = event;
             const element = createElement(clientX, clientY, clientX, clientY);
             setElements((prevState) => [...prevState, element]);
@@ -58,7 +58,7 @@ function App() {
     };
 
     const drawing = (event) => {
-        if (!isDrawing) return;
+        if (!action) return;
 
         const { clientX, clientY } = event;
         const index = elements.length - 1;
@@ -77,7 +77,7 @@ function App() {
     };
 
     const finishDrawing = () => {
-        setIsDrawing(false);
+        setAction(false);
     };
 
     return (
