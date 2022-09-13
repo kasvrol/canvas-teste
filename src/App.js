@@ -46,27 +46,38 @@ function App() {
     }, [elements]);
 
     const isWithinElement = (clientX, clientY, element) => {
-        const { shape } = element.roughElement
-        console.log(clientX, clientY, shape)
-    }
+        const { shape } = element.roughElement;
+        if (shape === "rectangle") {
+            console.log("rectangle");
+        } else {
+            console.log("outro");
+        }
+    };
 
     const getElementAtPosition = (clientX, clientY, elements) => {
-        return elements.find(element => isWithinElement(clientX, clientY, element))
-    }
+        return elements.find((element) =>
+            isWithinElement(clientX, clientY, element)
+        );
+    };
 
     const startDrawing = (event) => {
         const { clientX, clientY } = event;
         if (elementType === "select") {
-            console.log(elements)
-            const element = getElementAtPosition(clientX, clientY, elements)
-            setAction("moving")
-            return element
+            console.log(elements);
+            const element = getElementAtPosition(clientX, clientY, elements);
+            setAction("moving");
+            return element;
         } else {
             setAction("drawing");
-            const element = createElement(clientX, clientY, clientX, clientY, elementType);
+            const element = createElement(
+                clientX,
+                clientY,
+                clientX,
+                clientY,
+                elementType
+            );
             setElements((prevState) => [...prevState, element]);
         }
-
     };
 
     const drawing = (event) => {
@@ -94,15 +105,15 @@ function App() {
     const userChoice = (element) => {
         switch (element) {
             case "square":
-                setElementType("square")
-                break
+                setElementType("square");
+                break;
             case "select":
-                setElementType("select")
-                break
+                setElementType("select");
+                break;
             default:
-                setElementType("pen")
+                setElementType("pen");
         }
-    }
+    };
 
     return (
         <>
