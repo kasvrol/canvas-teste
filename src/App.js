@@ -65,7 +65,7 @@ function App() {
         const elementsCopy = [...elements];
         elementsCopy[id] = changeElement;
         setElements(elementsCopy);
-        console.log('entrou no update')
+        console.log("entrou no update");
     };
 
     const isWithinElement = (clientX, clientY, element) => {
@@ -125,20 +125,20 @@ function App() {
         if (action === "drawing") {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
+            updadeElement(index, x0, y0, clientX, clientY, elementType);
+        } else if (action === "moving") {
+            console.log(selectedElement);
+            const { id, x0, x1, y0, y1 } = selectedElement;
+            const { shape } = selectedElement.roughElement;
+            const witdh = x1 - x0;
+            const height = y1 - y0;
             updadeElement(
-                index,
-                x0,
-                y0,
+                id,
                 clientX,
                 clientY,
-                elementType
-            );
-        } else if (action === "moving") {
-            console.log(selectedElement)
-            const { id, x0, x1, y0, y1 } = selectedElement;
-            const { shape } = selectedElement.roughElement
-            updadeElement(
-                id, x0, x1, y0, y1, shape
+                clientX + witdh,
+                clientY + height,
+                shape
             );
         }
     };
