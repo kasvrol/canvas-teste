@@ -70,9 +70,8 @@ function App() {
             const a = { clientX: x0, clientY: y0 };
             const b = { clientX: x1, clientY: y1 };
             const c = { clientX, clientY };
-            console.log(distance(a, b))
-            console.log(distance(a, c))
-            console.log(distance(b, c))
+            const offset = distance(a, b) - (distance(a, c) - distance(b, c));
+            return Math.abs(offset) < 1;
         }
     };
 
@@ -85,7 +84,6 @@ function App() {
     const startDrawing = (event) => {
         const { clientX, clientY } = event;
         if (elementType === "select") {
-            console.log(elements);
             const element = getElementAtPosition(clientX, clientY, elements);
             setAction("moving");
             return element;
