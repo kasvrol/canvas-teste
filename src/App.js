@@ -53,6 +53,21 @@ function App() {
         );
     };
 
+    const updadeElement = (id, x0, y0, clientX, clientY, element) => {
+        const changeElement = createElement(
+            id,
+            x0,
+            y0,
+            clientX,
+            clientY,
+            element
+        );
+        const elementsCopy = [...elements];
+        elementsCopy[id] = changeElement;
+        setElements(elementsCopy);
+        console.log('entrou no update')
+    };
+
     const isWithinElement = (clientX, clientY, element) => {
         const { shape } = element.roughElement;
         const { x0, x1, y0, y1 } = element;
@@ -61,10 +76,12 @@ function App() {
             const maxX = Math.max(x0, x1);
             const minY = Math.min(y0, y1);
             const maxY = Math.max(y0, y1);
-            return clientX >= minX &&
+            return (
+                clientX >= minX &&
                 clientX <= maxX &&
                 clientY >= minY &&
-                clientY <= maxY;
+                clientY <= maxY
+            );
         } else {
             const a = { clientX: x0, clientY: y0 };
             const b = { clientX: x1, clientY: y1 };
@@ -85,7 +102,7 @@ function App() {
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             if (element) {
-                setSelectedElement(element)
+                setSelectedElement(element);
                 setAction("moving");
             }
         } else {
@@ -108,7 +125,7 @@ function App() {
         if (action === "drawing") {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
-            const updadeElement = createElement(
+            updadeElement(
                 index,
                 x0,
                 y0,
@@ -116,18 +133,15 @@ function App() {
                 clientY,
                 elementType
             );
-            const elementsCopy = [...elements];
-            elementsCopy[index] = updadeElement;
-            setElements(elementsCopy);
         } else if (action === "moving") {
-            const { id } = selectedElement
-            console.log("entrou na condicional", id)
+            const { id } = selectedElement;
+            console.log("entrou na condicional", id);
         }
     };
 
     const finishDrawing = () => {
         setAction("none");
-        setSelectedElement(null)
+        setSelectedElement(null);
     };
 
     const userChoice = (element) => {
