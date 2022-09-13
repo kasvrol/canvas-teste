@@ -5,19 +5,20 @@ import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
 
 const generator = rough.generator();
 
-function createElement(id, x0, y0, x1, y1, elementType) {
+function createElement(x0, y0, x1, y1, elementType) {
+    let roughElement
     switch (elementType) {
-        case "pen":
-            const roughElement = generator.line(id, x0, y0, x1, y1);
-            return { x0, y0, x1, y1, roughElement };
-        case "circle":
-            roughElement = generator.circle(id, x0, y0, x1, y1);
-            return { x0, y0, x1, y1, roughElement };
+        // case "pen":
+        //     roughElement = generator.line(x0, y0, x1, y1);
+        //     return { x0, y0, x1, y1, roughElement };
+        // case "circle":
+        //     roughElement = generator.circle(x0, y0, x1, y1);
+        //     return { x0, y0, x1, y1, roughElement };
         case "square":
-            roughElement = generator.rectangle(id, x0, y0, x1 - x0, y1 - y0);
+            roughElement = generator.rectangle(x0, y0, x1 - x0, y1 - y0);
             return { x0, y0, x1, y1, roughElement };
-            break;
         default:
+            roughElement = generator.line(x0, y0, x1, y1);
             return { x0, y0, x1, y1, roughElement };
     }
 }
@@ -25,10 +26,8 @@ function createElement(id, x0, y0, x1, y1, elementType) {
 function App() {
     const canvasRef = useRef(null);
     const [elements, setElements] = useState([]);
-    // const [isDrawing, setIsDrawing] = useState(false);
-    const [action, setAction] = useState("none");
+    const [isDrawing, setIsDrawing] = useState(false);
     const [elementType, setElementType] = useState(" ");
-    const [selectedElement, setSelectedElement] = useState(null);
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -46,104 +45,34 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
-    const updadeElement = (id,
-        x0,
-        y0,
-        x1,
-        y1,
-        type) => {
-        const updadeElement = createElement(
-            id,
-            x0,
-            y0,
-            x1,
-            y1,
-            type
-        );
-
-        const elementsCopy = [...elements];
-        elementsCopy[id] = updadeElement;
-        setElements(elementsCopy);
-    }
-
-    const isWithinElement = (clientX, clientY, element) => {
-        const { type, x0, x1, y0, y1 } = element;
-        if (type === "square") {
-            const minX = Math.min(x0, x1);
-            const maxX = Math.max(x0, x1);
-            const minY = Math.min(y0, y1);
-            const maxY = Math.min(y0, y1);
-            return (
-                clientX >= minX &&
-                clientX <= maxX &&
-                clientY >= minY &&
-                clientY <= maxY
-            );
-        } else {
-            const a = { clientX: x0, clientY: y0 };
-            const b = { clientX: x1, clientY: y1 };
-            const c = { clientX, clientY };
-            const offset = distance(a, b) - (distance(a, c) + distance(b, c));
-            return Math.abs(offset) < 1;
-        }
-    };
-
-    const getElementAtPosition = (clientX, clientY, elements) => {
-        return elements.find((element) =>
-            isWithinElement(clientX, clientY, element)
-        );
-    };
-
-    const distance = (a, b) =>
-        Math.sqrt(
-            Math.pow(a.clientX - b.clientX, 2) +
-            Math.pow(a.clientY - b.clientY, 2)
-        );
-
     const startDrawing = (event) => {
+        setIsDrawing(true);
         const { clientX, clientY } = event;
-        if (elementType === "select") {
-            const element = getElementAtPosition(clientX, clientY, elements);
-
-            if (element) {
-                setSelectedElement(element);
-                setAction("moving");
-            }
-        } else {
-            const id = elements.length;
-            const element = createElement(
-                id,
-                clientX,
-                clientY,
-                clientX,
-                clientY
-            );
-            setElements((prevState) => [...prevState, element]);
-            setAction("drawing");
-        }
+        const element = createElement(clientX, clientY, clientX, clientY);
+        setElements((prevState) => [...prevState, element]);
     };
 
     const drawing = (event) => {
-        if (action === "drawing") {
-            const { clientX, clientY } = event;
-            const index = elements.length - 1;
-            const { x0, y0 } = elements[index];
-            updadeElement(
-                index,
-                x0,
-                y0,
-                clientX,
-                clientY,
-                elementType
-            );
-        } else if (action === "moving") {
-            const { id } = selectedElement;
-        }
+        if (!isDrawing) return;
+
+        const { clientX, clientY } = event;
+        const index = elements.length - 1;
+        const { x0, y0 } = elements[index];
+        const updadeElement = createElement(
+            x0,
+            y0,
+            clientX,
+            clientY,
+            elementType
+        );
+
+        const elementsCopy = [...elements];
+        elementsCopy[index] = updadeElement;
+        setElements(elementsCopy);
     };
 
     const finishDrawing = () => {
-        setAction("none");
-        setSelectedElement(null);
+        setIsDrawing(false);
     };
 
     return (
