@@ -46,7 +46,8 @@ function App() {
     }, [elements]);
 
     const isWithinElement = (clientX, clientY, element) => {
-        console.log(clientX, clientY, element)
+        const { shape } = element.roughElement
+        console.log(clientX, clientY, shape)
     }
 
     const getElementAtPosition = (clientX, clientY, elements) => {
@@ -56,12 +57,13 @@ function App() {
     const startDrawing = (event) => {
         const { clientX, clientY } = event;
         if (elementType === "select") {
+            console.log(elements)
             const element = getElementAtPosition(clientX, clientY, elements)
             setAction("moving")
             return element
         } else {
             setAction("drawing");
-            const element = createElement(clientX, clientY, clientX, clientY);
+            const element = createElement(clientX, clientY, clientX, clientY, elementType);
             setElements((prevState) => [...prevState, element]);
         }
 
