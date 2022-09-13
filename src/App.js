@@ -47,30 +47,29 @@ function App() {
 
     const isWithinElement = (clientX, clientY, element) => {
         const { shape } = element.roughElement;
-        console.log(element)
-        console.log(clientX, clientY)
+        const { x0, x1, y0, y1 } = element;
         if (shape === "rectangle") {
-            const minX = Math.min(clientX, clientY)
-            const maxX = Math.max(clientX, clientY)
-            const minY = Math.min(clientX, clientY)
-            const maxY = Math.max(clientX, clientY)
-            const position = { clientX, clientY }
-            console.log(minX)
-            console.log(maxX)
-            console.log(minY)
-            console.log(maxY)
-            console.log(position)
+            const minX = Math.min(x0, x1);
+            const maxX = Math.max(x0, x1);
+            const minY = Math.min(y0, y1);
+            const maxY = Math.max(y0, y1);
+            const position =
+                clientX >= minX &&
+                clientX <= maxX &&
+                clientY >= minY &&
+                clientY <= maxY;
+            return position;
         } else {
-            const minX = Math.min(clientX, clientY)
-            const maxX = Math.max(clientX, clientY)
-            const minY = Math.min(clientX, clientY)
-            const maxY = Math.max(clientX, clientY)
-            const position = { clientX, clientY }
-            console.log("outro", minX)
-            console.log("outro", maxX)
-            console.log("outro", minY)
-            console.log("outro", maxY)
-            console.log("outro", position)
+            const minX = Math.min(clientX, clientY);
+            const maxX = Math.max(clientX, clientY);
+            const minY = Math.min(clientX, clientY);
+            const maxY = Math.max(clientX, clientY);
+            const position = { clientX, clientY };
+            console.log("outro", minX);
+            console.log("outro", maxX);
+            console.log("outro", minY);
+            console.log("outro", maxY);
+            console.log("outro", position);
         }
     };
 
