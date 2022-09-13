@@ -65,7 +65,6 @@ function App() {
         const elementsCopy = [...elements];
         elementsCopy[id] = changeElement;
         setElements(elementsCopy);
-        console.log("entrou no update");
     };
 
     const isWithinElement = (clientX, clientY, element) => {
@@ -102,8 +101,8 @@ function App() {
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             if (element) {
-                const offsetX = clientX - element.x0
-                const offsetY = clientY - element.y0
+                const offsetX = clientX - element.x0;
+                const offsetY = clientY - element.y0;
                 setSelectedElement({ ...element, offsetX, offsetY });
                 setAction("moving");
             }
