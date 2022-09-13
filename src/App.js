@@ -45,8 +45,12 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
+    const isWithinElement = (clientX, clientY, element) => {
+        console.log(clientX, clientY, element)
+    }
+
     const getElementAtPosition = (clientX, clientY, elements) => {
-        console.log(clientX, clientY, elements)
+        return elements.find(element => isWithinElement(clientX, clientY, element))
     }
 
     const startDrawing = (event) => {
