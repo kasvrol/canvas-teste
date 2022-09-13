@@ -45,11 +45,16 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
+    const getElementAtPosition = (clientX, clientY, elements) => {
+        console.log(clientX, clientY, elements)
+    }
+
     const startDrawing = (event) => {
         const { clientX, clientY } = event;
         if (elementType === "select") {
+            const element = getElementAtPosition(clientX, clientY, elements)
             setAction("moving")
-            console.log(elementType);
+            return element
         } else {
             setAction("drawing");
             const element = createElement(clientX, clientY, clientX, clientY);
