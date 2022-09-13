@@ -60,16 +60,12 @@ function App() {
                 clientY <= maxY;
             return position;
         } else {
-            const minX = Math.min(clientX, clientY);
-            const maxX = Math.max(clientX, clientY);
-            const minY = Math.min(clientX, clientY);
-            const maxY = Math.max(clientX, clientY);
-            const position = { clientX, clientY };
-            console.log("outro", minX);
-            console.log("outro", maxX);
-            console.log("outro", minY);
-            console.log("outro", maxY);
-            console.log("outro", position);
+            const a = { clientX: x0, clientY: y0 }
+            const b = { clientX: x1, clientY: y1 }
+            const c = { clientX, clientY }
+            console.log("outro A", a);
+            console.log("outro B", b);
+            console.log("outro C", c);
         }
     };
 
