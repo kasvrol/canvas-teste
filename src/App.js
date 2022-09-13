@@ -26,7 +26,7 @@ function createElement(x0, y0, x1, y1, elementType) {
 function App() {
     const canvasRef = useRef(null);
     const [elements, setElements] = useState([]);
-    const [action, setAction] = useState("");
+    const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState(" ");
 
     useLayoutEffect(() => {
@@ -46,11 +46,12 @@ function App() {
     }, [elements]);
 
     const startDrawing = (event) => {
+        const { clientX, clientY } = event;
         if (elementType === "select") {
+            setAction("moving")
             console.log(elementType);
         } else {
-            setAction(true);
-            const { clientX, clientY } = event;
+            setAction("drawing");
             const element = createElement(clientX, clientY, clientX, clientY);
             setElements((prevState) => [...prevState, element]);
         }
@@ -58,27 +59,39 @@ function App() {
     };
 
     const drawing = (event) => {
-        if (!action) return;
-
         const { clientX, clientY } = event;
-        const index = elements.length - 1;
-        const { x0, y0 } = elements[index];
-        const updadeElement = createElement(
-            x0,
-            y0,
-            clientX,
-            clientY,
-            elementType
-        );
-
-        const elementsCopy = [...elements];
-        elementsCopy[index] = updadeElement;
-        setElements(elementsCopy);
+        if (action === "drawing") {
+            const index = elements.length - 1;
+            const { x0, y0 } = elements[index];
+            const updadeElement = createElement(
+                x0,
+                y0,
+                clientX,
+                clientY,
+                elementType
+            );
+            const elementsCopy = [...elements];
+            elementsCopy[index] = updadeElement;
+            setElements(elementsCopy);
+        }
     };
 
     const finishDrawing = () => {
-        setAction(false);
+        setAction("none");
     };
+
+    const userChoice = (element) => {
+        switch (element) {
+            case "square":
+                setElementType("square")
+                break
+            case "select":
+                setElementType("select")
+                break
+            default:
+                setElementType("pen")
+        }
+    }
 
     return (
         <>
@@ -91,37 +104,37 @@ function App() {
             >
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => setElementType("pen")}
+                    onClick={() => userChoice("pen")}
                 >
                     <FaPen />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => setElementType("circle")}
+                    onClick={() => userChoice("circle")}
                 >
                     <FaCircle />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => setElementType("square")}
+                    onClick={() => userChoice("square")}
                 >
                     <FaSquare />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => setElementType("undo")}
+                    onClick={() => userChoice("undo")}
                 >
                     <FaUndo />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => setElementType("redo")}
+                    onClick={() => userChoice("redo")}
                 >
                     <FaRedo />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => setElementType("select")}
+                    onClick={() => userChoice("select")}
                 >
                     <GrSelect />
                 </section>
