@@ -54,6 +54,7 @@ function App() {
             const element = createElement(clientX, clientY, clientX, clientY);
             setElements((prevState) => [...prevState, element]);
         }
+
     };
 
     const drawing = (event) => {
