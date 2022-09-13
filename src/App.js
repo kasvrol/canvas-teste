@@ -102,7 +102,9 @@ function App() {
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             if (element) {
-                setSelectedElement(element);
+                const offsetX = clientX - element.x0
+                const offsetY = clientY - element.y0
+                setSelectedElement({ ...element, offsetX, offsetY });
                 setAction("moving");
             }
         } else {
@@ -127,17 +129,18 @@ function App() {
             const { x0, y0 } = elements[index];
             updadeElement(index, x0, y0, clientX, clientY, elementType);
         } else if (action === "moving") {
-            console.log(selectedElement);
-            const { id, x0, x1, y0, y1 } = selectedElement;
+            const { id, x0, x1, y0, y1, offsetX, offsetY } = selectedElement;
             const { shape } = selectedElement.roughElement;
             const witdh = x1 - x0;
             const height = y1 - y0;
+            const nexX0 = clientX - offsetX;
+            const nexY0 = clientY - offsetY;
             updadeElement(
                 id,
-                clientX,
-                clientY,
-                clientX + witdh,
-                clientY + height,
+                nexX0,
+                nexY0,
+                nexX0 + witdh,
+                nexY0 + height,
                 shape
             );
         }
