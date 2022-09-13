@@ -10,7 +10,7 @@ em construção...
 -   Node (para download das bibliotecas)
 -   roughjs (biblioteca para auxilio na criação de formas geométricas)
 
-## AAvaliar o projeto em sua máquina
+## Para avaliar o projeto em sua máquina
 
 In the project directory, you can run:
 
