@@ -118,6 +118,8 @@ function App() {
             const elementsCopy = [...elements];
             elementsCopy[index] = updadeElement;
             setElements(elementsCopy);
+        } else if (action === "moving") {
+            console.log("entrou na condicional")
         }
     };
 
