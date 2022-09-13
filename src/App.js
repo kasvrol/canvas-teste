@@ -14,7 +14,7 @@ function createElement(id, x0, y0, x1, y1, elementType) {
         // case "circle":
         //     roughElement = generator.circle(x0, y0, x1, y1);
         //     return { x0, y0, x1, y1, roughElement };
-        case "square":
+        case "rectangle":
             roughElement = generator.rectangle(x0, y0, x1 - x0, y1 - y0);
             return { id, x0, y0, x1, y1, roughElement };
         default:
@@ -134,8 +134,12 @@ function App() {
                 elementType
             );
         } else if (action === "moving") {
-            const { id } = selectedElement;
-            console.log("entrou na condicional", id);
+            console.log(selectedElement)
+            const { id, x0, x1, y0, y1 } = selectedElement;
+            const { shape } = selectedElement.roughElement
+            updadeElement(
+                id, x0, x1, y0, y1, shape
+            );
         }
     };
 
@@ -146,8 +150,8 @@ function App() {
 
     const userChoice = (element) => {
         switch (element) {
-            case "square":
-                setElementType("square");
+            case "rectangle":
+                setElementType("rectangle");
                 break;
             case "select":
                 setElementType("select");
@@ -180,7 +184,7 @@ function App() {
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => userChoice("square")}
+                    onClick={() => userChoice("rectangle")}
                 >
                     <FaSquare />
                 </section>
