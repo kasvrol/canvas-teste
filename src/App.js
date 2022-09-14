@@ -53,6 +53,10 @@ function App() {
         );
     };
 
+    const nearPoint = (x0, y0, x1, y1, shape) => {
+        return Math.abs(x0 - x1) < 5 && Math.abs(y0 - y1) < 5 ? shape : null;
+    };
+
     const updadeElement = (id, x0, y0, clientX, clientY, element) => {
         const changeElement = createElement(
             id,
@@ -167,9 +171,11 @@ function App() {
         const index = elements.length - 1;
         const { id } = elements[index];
         const { shape } = elements[index].roughElement;
-        console.log(index, id, shape)
+        console.log(index, id, shape);
         if (action === "drawing") {
-            const { x0, y0, x1, y1 } = adjustElementCoordinates(elements[index]);
+            const { x0, y0, x1, y1 } = adjustElementCoordinates(
+                elements[index]
+            );
             updadeElement(id, x0, y0, x1, y1, shape);
         }
         setAction("none");
