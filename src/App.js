@@ -115,29 +115,6 @@ function App() {
         }
     };
 
-    const isWithinElement = (clientX, clientY, element) => {
-        const { shape } = element.roughElement;
-        const { x0, x1, y0, y1 } = element;
-        if (shape === "rectangle" || shape === "line") {
-            const minX = Math.min(x0, x1);
-            const maxX = Math.max(x0, x1);
-            const minY = Math.min(y0, y1);
-            const maxY = Math.max(y0, y1);
-            return (
-                clientX >= minX &&
-                clientX <= maxX &&
-                clientY >= minY &&
-                clientY <= maxY
-            );
-        } else {
-            const a = { clientX: x0, clientY: y0 };
-            const b = { clientX: x1, clientY: y1 };
-            const c = { clientX, clientY };
-            const offset = distance(a, b) - (distance(a, c) - distance(b, c));
-            return Math.abs(offset) < 1;
-        }
-    };
-
     const getElementAtPosition = (clientX, clientY, elements) => {
         return elements
             .map((element) => ({
