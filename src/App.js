@@ -23,9 +23,14 @@ function createElement(id, x0, y0, x1, y1, elementType) {
     }
 }
 
+const useHistory = (state) => {
+    const [elements, setElements] = useState(state);
+    return [elements, setElements];
+};
+
 function App() {
     const canvasRef = useRef(null);
-    const [elements, setElements] = useState([]);
+    const [elements, setElements] = useHistory([]);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState("");
     const [selectedElement, setSelectedElement] = useState(null);
@@ -134,12 +139,11 @@ function App() {
                 setSelectedElement({ ...element, offsetX, offsetY });
                 if (element.position === "inside") {
                     setAction("moving");
-                    console.log("mouse dentro da figura")
+                    console.log("mouse dentro da figura");
                 } else {
                     setAction("resizing");
-                    console.log("mouse próximo ao canto da figura")
+                    console.log("mouse próximo ao canto da figura");
                 }
-
             }
         } else {
             const id = elements.length;
@@ -169,33 +173,32 @@ function App() {
             default:
                 return "move";
         }
-    }
+    };
 
     const resizedCoordinater = (clientX, clientY, position, coordinates) => {
-        const { x0, x1, y0, y1 } = coordinates
+        const { x0, x1, y0, y1 } = coordinates;
         switch (position) {
             case "tl" || "start":
-                return { x0: clientX, y0: clientY, x1, y1 }
+                return { x0: clientX, y0: clientY, x1, y1 };
             case "tr":
-                return { x0, y0: clientY, x1: clientX, y1 }
+                return { x0, y0: clientY, x1: clientX, y1 };
             case "br" || "end":
-                return { x0, y0, x1: clientX, y1: clientY }
+                return { x0, y0, x1: clientX, y1: clientY };
             case "bl":
-                return { x0: clientX, y0, x1, y1: clientY }
+                return { x0: clientX, y0, x1, y1: clientY };
             default:
-                return null
+                return null;
         }
-    }
+    };
 
     const drawing = (event) => {
         const { clientX, clientY } = event;
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
-            event.target.style.cursor = element ? cursorlala(element.position) : "default"
+            event.target.style.cursor = element
+                ? cursorlala(element.position)
+                : "default";
         }
-
-
-
 
         if (action === "drawing") {
             const index = elements.length - 1;
@@ -219,7 +222,12 @@ function App() {
         } else if (action === "resizing") {
             const { id, position, ...coordinates } = selectedElement;
             const { shape } = selectedElement.roughElement;
-            const { x0, x1, y0, y1 } = resizedCoordinater(clientX, clientY, position, coordinates)
+            const { x0, x1, y0, y1 } = resizedCoordinater(
+                clientX,
+                clientY,
+                position,
+                coordinates
+            );
             updadeElement(id, x0, y0, x1, y1, shape);
         }
     };
