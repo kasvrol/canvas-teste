@@ -53,8 +53,8 @@ function App() {
         );
     };
 
-    const nearPoint = (x0, y0, x1, y1, shape) => {
-        return Math.abs(x0 - x1) < 5 && Math.abs(y0 - y1) < 5 ? shape : null;
+    const nearPoint = (x0, y0, x1, y1, quadrant) => {
+        return Math.abs(x0 - x1) < 5 && Math.abs(y0 - y1) < 5 ? quadrant : null;
     };
 
     const updadeElement = (id, x0, y0, clientX, clientY, element) => {
