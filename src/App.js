@@ -164,6 +164,14 @@ function App() {
     };
 
     const finishDrawing = () => {
+        const index = elements.length - 1;
+        const { id } = elements[index];
+        const { shape } = elements[index].roughElement;
+        console.log(index, id, shape)
+        if (action === "drawing") {
+            const { x0, y0, x1, y1 } = adjustElementCoordinates(elements[index]);
+            updadeElement(id, x0, y0, x1, y1, shape);
+        }
         setAction("none");
         setSelectedElement(null);
     };
