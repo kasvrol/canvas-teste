@@ -193,6 +193,22 @@ function App() {
         }
     }
 
+    const resizedCoordinater = (clientX, clientY, position, coordinates) => {
+        const { x0, x1, y0, y1 } = coordinates
+        switch (position) {
+            case "tl" || "start":
+                return { x0: clientX, y0: clientY, x1, y1 }
+            case "tr":
+                return { x0, y0: clientY, x1: clientX, y1 }
+            case "br" || "end":
+                return { x0, y0, x1: clientX, y1: clientY }
+            case "bl":
+                return { x0: clientX, y0, x1, y1: clientY }
+            default:
+                return null
+        }
+    }
+
     const drawing = (event) => {
         const { clientX, clientY } = event;
         if (elementType === "select") {
@@ -222,6 +238,8 @@ function App() {
                 nexY0 + height,
                 shape
             );
+        } else if (action === "resize") {
+
         }
     };
 
