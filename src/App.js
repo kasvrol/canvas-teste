@@ -251,7 +251,7 @@ function App() {
         const index = selectedElement.id;
         const { id } = elements[index];
         const { shape } = elements[index].roughElement;
-        if (action === "drawing" || action === "resizing") {
+        if (action === "drawing") {
             const { x0, y0, x1, y1 } = adjustElementCoordinates(
                 elements[index]
             );
