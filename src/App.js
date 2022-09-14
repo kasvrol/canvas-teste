@@ -159,6 +159,7 @@ function App() {
                     setAction("moving");
                     console.log("mouse dentro da figura")
                 } else {
+                    setAction("resizing");
                     console.log("mouse próximo ao canto da figura")
                 }
 
@@ -238,8 +239,11 @@ function App() {
                 nexY0 + height,
                 shape
             );
-        } else if (action === "resize") {
-
+        } else if (action === "resizing") {
+            const { id, position, ...coordinates } = selectedElement;
+            const { shape } = selectedElement.roughElement;
+            const { x0, x1, y0, y1 } = resizedCoordinater(clientX, clientY, position, coordinates)
+            updadeElement(id, x0, y0, x1, y1, shape);
         }
     };
 
