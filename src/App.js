@@ -139,10 +139,8 @@ function App() {
                 setSelectedElement({ ...element, offsetX, offsetY });
                 if (element.position === "inside") {
                     setAction("moving");
-                    console.log("mouse dentro da figura");
                 } else {
                     setAction("resizing");
-                    console.log("mouse próximo ao canto da figura");
                 }
             }
         } else {
