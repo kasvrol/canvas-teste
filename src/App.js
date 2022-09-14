@@ -40,13 +40,20 @@ const useHistory = (state) => {
         }
     }
 
+    const undo = () => {
+        index > 0 && setIndex(prevState => prevState - 1)
+    }
 
-    return [elements[index], setState];
+    const redo = () => {
+        index < elements.length - 1 && setIndex(prevState => prevState + 1)
+    }
+
+    return [elements[index], setState, undo, redo];
 };
 
 function App() {
     const canvasRef = useRef(null);
-    const [elements, setElements] = useHistory([]);
+    const [elements, setElements, undo, redo] = useHistory([]);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState("");
     const [selectedElement, setSelectedElement] = useState(null);
@@ -67,13 +74,7 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
-    const undo = () => {
-        console.log("undo")
-    }
 
-    const redo = () => {
-        console.log("redo")
-    }
 
     const distance = (variableOne, variableTwo) => {
         Math.sqrt(
@@ -310,13 +311,13 @@ function App() {
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => undo()}
+                    onClick={undo}
                 >
                     <FaUndo />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => redo()}
+                    onClick={redo}
                 >
                     <FaRedo />
                 </section>
