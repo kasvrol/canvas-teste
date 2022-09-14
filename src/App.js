@@ -139,9 +139,12 @@ function App() {
     };
 
     const getElementAtPosition = (clientX, clientY, elements) => {
-        return elements.find((element) =>
-            positionWithinElement(clientX, clientY, element)
-        );
+        return elements
+            .map((element) => ({
+                ...element,
+                position: positionWithinElement(clientX, clientY, element),
+            }))
+            .find((element) => element.position !== null);
     };
 
     const startDrawing = (event) => {
