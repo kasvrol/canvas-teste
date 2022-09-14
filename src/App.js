@@ -67,6 +67,24 @@ function App() {
         setElements(elementsCopy);
     };
 
+    const adjustElementCoordinates = (element) => {
+        const { shape } = element.roughElement;
+        const { x0, x1, y0, y1 } = element;
+        if (shape === "rectangle" || shape === "line") {
+            const minX = Math.min(x0, x1);
+            const maxX = Math.max(x0, x1);
+            const minY = Math.min(y0, y1);
+            const maxY = Math.max(y0, y1);
+            return { x0: minX, y0: minY, x1: maxX, y1: maxY };
+        } else {
+            if (x0 < x1 || (x0 === x1 && y0 < y1)) {
+                return { x0, y0, x1, y1 };
+            } else {
+                return { x0: x1, y0: y1, x1: x0, y1: y0 };
+            }
+        }
+    };
+
     const isWithinElement = (clientX, clientY, element) => {
         const { shape } = element.roughElement;
         const { x0, x1, y0, y1 } = element;
@@ -86,7 +104,6 @@ function App() {
             const b = { clientX: x1, clientY: y1 };
             const c = { clientX, clientY };
             const offset = distance(a, b) - (distance(a, c) - distance(b, c));
-            console.log("AAA", Math.abs(offset) < 1)
             return Math.abs(offset) < 1;
         }
     };
