@@ -8,18 +8,17 @@ const generator = rough.generator();
 function createElement(id, x0, y0, x1, y1, elementType) {
     let roughElement;
     switch (elementType) {
-        // case "pen":
-        //     roughElement = generator.line(x0, y0, x1, y1);
-        //     return { x0, y0, x1, y1, roughElement };
-        // case "circle":
-        //     roughElement = generator.circle(x0, y0, x1, y1);
-        //     return { x0, y0, x1, y1, roughElement };
+        case "pen":
+            roughElement = generator.line(x0, y0, x1, y1);
+            return { id, x0, y0, x1, y1, roughElement };
+        case "ellipse":
+            roughElement = generator.ellipse(x0, y0, x1 - x0, y1 - y0);
+            return { id, x0, y0, x1, y1, roughElement };
         case "rectangle":
             roughElement = generator.rectangle(x0, y0, x1 - x0, y1 - y0);
             return { id, x0, y0, x1, y1, roughElement };
         default:
-            roughElement = generator.line(x0, y0, x1, y1);
-            return { id, x0, y0, x1, y1, roughElement };
+            throw new Error(`Type not recognised: ${element}`);
     }
 }
 
@@ -28,25 +27,26 @@ const useHistory = (state) => {
     const [elements, setElements] = useState([state]);
 
     const setState = (action, overwrite = false) => {
-        const newState = typeof action === "function" ? action(elements[index]) : action;
+        const newState =
+            typeof action === "function" ? action(elements[index]) : action;
 
         if (overwrite) {
-            const elementsCopy = [...elements]
-            elementsCopy[index] = newState
-            setElements(elementsCopy)
+            const elementsCopy = [...elements];
+            elementsCopy[index] = newState;
+            setElements(elementsCopy);
         } else {
-            setElements(prevState => [...prevState, newState])
-            setIndex(prevState => prevState + 1)
+            setElements((prevState) => [...prevState, newState]);
+            setIndex((prevState) => prevState + 1);
         }
-    }
+    };
 
     const undo = () => {
-        index > 0 && setIndex(prevState => prevState - 1)
-    }
+        index > 0 && setIndex((prevState) => prevState - 1);
+    };
 
     const redo = () => {
-        index < elements.length - 1 && setIndex(prevState => prevState + 1)
-    }
+        index < elements.length - 1 && setIndex((prevState) => prevState + 1);
+    };
 
     return [elements[index], setState, undo, redo];
 };
@@ -74,8 +74,6 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
-
-
     const distance = (variableOne, variableTwo) => {
         Math.sqrt(
             Math.pow(variableOne.clientX - variableTwo.clientX, 2) +
@@ -88,17 +86,22 @@ function App() {
     };
 
     const updadeElement = (id, x0, y0, clientX, clientY, element) => {
-        const changeElement = createElement(
-            id,
-            x0,
-            y0,
-            clientX,
-            clientY,
-            element
-        );
-        const elementsCopy = [...elements];
-        elementsCopy[id] = changeElement;
-        setElements(elementsCopy, true);
+        try {
+            const changeElement = createElement(
+                id,
+                x0,
+                y0,
+                clientX,
+                clientY,
+                element
+            );
+            const elementsCopy = [...elements];
+            elementsCopy[id] = changeElement;
+            setElements(elementsCopy, true);
+        } catch (error) {
+            console.log(error)
+        }
+
     };
 
     const adjustElementCoordinates = (element) => {
@@ -274,11 +277,16 @@ function App() {
             case "rectangle":
                 setElementType("rectangle");
                 break;
+            case "ellipse":
+                setElementType("ellipse");
+                break;
             case "select":
                 setElementType("select");
                 break;
-            default:
+            case "pen":
                 setElementType("pen");
+            default:
+                throw new Error(`Type not recognised: ${element}`);
         }
     };
 
@@ -299,7 +307,7 @@ function App() {
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => userChoice("circle")}
+                    onClick={() => userChoice("ellipse")}
                 >
                     <FaCircle />
                 </section>
@@ -309,16 +317,10 @@ function App() {
                 >
                     <FaSquare />
                 </section>
-                <section
-                    style={{ cursor: "pointer" }}
-                    onClick={undo}
-                >
+                <section style={{ cursor: "pointer" }} onClick={undo}>
                     <FaUndo />
                 </section>
-                <section
-                    style={{ cursor: "pointer" }}
-                    onClick={redo}
-                >
+                <section style={{ cursor: "pointer" }} onClick={redo}>
                     <FaRedo />
                 </section>
                 <section
