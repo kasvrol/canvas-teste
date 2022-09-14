@@ -89,6 +89,23 @@ function App() {
         }
     };
 
+    const positionWithinElement = (clientX, clientY, element) => {
+        const { shape } = element.roughElement;
+        const { x0, x1, y0, y1 } = element;
+        if (shape === "rectangle" || shape === "line") {
+            const topLeft = nearPoint(clientX, clientY, x0, y0, "tl");
+            const topRight = nearPoint(clientX, clientY, x1, y0, "tr");
+            const bottomLeft = nearPoint(clientX, clientY, x0, y1, "bl");
+            const bottomRight = nearPoint(clientX, clientY, x1, y1, "br");
+
+            const inside =
+                clientX >= x0 && clientX <= x1 && clientY >= y0 && clientY <= y1
+                    ? "inside"
+                    : null;
+            return topLeft || topRight || bottomLeft || bottomRight || inside;
+        }
+    };
+
     const isWithinElement = (clientX, clientY, element) => {
         const { shape } = element.roughElement;
         const { x0, x1, y0, y1 } = element;
@@ -114,7 +131,7 @@ function App() {
 
     const getElementAtPosition = (clientX, clientY, elements) => {
         return elements.find((element) =>
-            isWithinElement(clientX, clientY, element)
+            positionWithinElement(clientX, clientY, element)
         );
     };
 
