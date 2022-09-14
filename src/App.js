@@ -248,10 +248,10 @@ function App() {
     };
 
     const finishDrawing = () => {
-        const index = elements.length - 1;
+        const index = selectedElement.id;
         const { id } = elements[index];
         const { shape } = elements[index].roughElement;
-        if (action === "drawing") {
+        if (action === "drawing" || action === "resizing") {
             const { x0, y0, x1, y1 } = adjustElementCoordinates(
                 elements[index]
             );
