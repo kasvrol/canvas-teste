@@ -24,8 +24,17 @@ function createElement(id, x0, y0, x1, y1, elementType) {
 }
 
 const useHistory = (state) => {
-    const [elements, setElements] = useState(state);
-    return [elements, setElements];
+    const [index, setIndex] = useState(0);
+    const [elements, setElements] = useState([state]);
+
+    const setState = (action) => {
+        const newState = typeof action === "function" ? action(elements[index]) : action;
+        setElements(prevState => [...prevState, newState])
+        setIndex(prevState => prevState + 1)
+    }
+
+
+    return [elements[index], setState];
 };
 
 function App() {
