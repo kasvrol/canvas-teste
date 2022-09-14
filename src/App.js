@@ -47,7 +47,7 @@ function App() {
     }, [elements]);
 
     const distance = (variableOne, variableTwo) => {
-        return Math.sqrt(
+        Math.sqrt(
             Math.pow(variableOne.clientX - variableTwo.clientX, 2) +
             Math.pow(variableOne.clientY - variableTwo.clientY, 2)
         );
@@ -70,7 +70,7 @@ function App() {
     const isWithinElement = (clientX, clientY, element) => {
         const { shape } = element.roughElement;
         const { x0, x1, y0, y1 } = element;
-        if (shape === "rectangle") {
+        if (shape === "rectangle" || shape === "line") {
             const minX = Math.min(x0, x1);
             const maxX = Math.max(x0, x1);
             const minY = Math.min(y0, y1);
@@ -86,6 +86,7 @@ function App() {
             const b = { clientX: x1, clientY: y1 };
             const c = { clientX, clientY };
             const offset = distance(a, b) - (distance(a, c) - distance(b, c));
+            console.log("AAA", Math.abs(offset) < 1)
             return Math.abs(offset) < 1;
         }
     };
