@@ -248,7 +248,7 @@ function App() {
     };
 
     const finishDrawing = () => {
-        const index = selectedElement.id;
+        const index = elements.length - 1;
         const { id } = elements[index];
         const { shape } = elements[index].roughElement;
         if (action === "drawing") {
