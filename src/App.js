@@ -74,7 +74,7 @@ function App() {
     const adjustElementCoordinates = (element) => {
         const { shape } = element.roughElement;
         const { x0, x1, y0, y1 } = element;
-        if (shape === "rectangle" || shape === "line") {
+        if (shape === "rectangle") {
             const minX = Math.min(x0, x1);
             const maxX = Math.max(x0, x1);
             const minY = Math.min(y0, y1);
@@ -155,10 +155,15 @@ function App() {
                 const offsetX = clientX - element.x0;
                 const offsetY = clientY - element.y0;
                 setSelectedElement({ ...element, offsetX, offsetY });
-                setAction("moving");
+                if (element.position === "inside") {
+                    setAction("moving");
+                    console.log("mouse dentro da figura")
+                } else {
+                    console.log("mouse próximo ao canto da figura")
+                }
+
             }
         } else {
-            setAction("drawing");
             const id = elements.length;
             const element = createElement(
                 id,
@@ -169,11 +174,35 @@ function App() {
                 elementType
             );
             setElements((prevState) => [...prevState, element]);
+            setAction("drawing");
         }
     };
 
+    const cursorlala = (position) => {
+        switch (position) {
+            case "tl":
+            case "br":
+            case "start":
+            case "end":
+                return "nwse-resize";
+            case "tr":
+            case "bl":
+                return "nesw-resize";
+            default:
+                return "move";
+        }
+    }
+
     const drawing = (event) => {
         const { clientX, clientY } = event;
+        if (elementType === "select") {
+            const element = getElementAtPosition(clientX, clientY, elements);
+            event.target.style.cursor = element ? cursorlala(element.position) : "default"
+        }
+
+
+
+
         if (action === "drawing") {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
