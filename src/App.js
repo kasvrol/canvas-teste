@@ -67,6 +67,14 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
+    const undo = () => {
+        console.log("undo")
+    }
+
+    const redo = () => {
+        console.log("redo")
+    }
+
     const distance = (variableOne, variableTwo) => {
         Math.sqrt(
             Math.pow(variableOne.clientX - variableTwo.clientX, 2) +
@@ -302,13 +310,13 @@ function App() {
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => userChoice("undo")}
+                    onClick={() => undo()}
                 >
                     <FaUndo />
                 </section>
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => userChoice("redo")}
+                    onClick={() => redo()}
                 >
                     <FaRedo />
                 </section>
