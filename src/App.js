@@ -103,6 +103,15 @@ function App() {
                     ? "inside"
                     : null;
             return topLeft || topRight || bottomLeft || bottomRight || inside;
+        } else {
+            const a = { clientX: x0, clientY: y0 };
+            const b = { clientX: x1, clientY: y1 };
+            const c = { clientX, clientY };
+            const offset = distance(a, b) - (distance(a, c) - distance(b, c));
+            const start = nearPoint(clientX, clientY, x0, y0, "start");
+            const end = nearPoint(clientX, clientY, x1, y1, "end");
+            const inside = Math.abs(offset) < 1 ? "inside" : null;
+            return start || end || inside;
         }
     };
 
@@ -188,7 +197,6 @@ function App() {
         const index = elements.length - 1;
         const { id } = elements[index];
         const { shape } = elements[index].roughElement;
-        console.log(index, id, shape);
         if (action === "drawing") {
             const { x0, y0, x1, y1 } = adjustElementCoordinates(
                 elements[index]
