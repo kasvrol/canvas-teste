@@ -2,60 +2,17 @@ import { useLayoutEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
 import { GrSelect } from "react-icons/gr";
 import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
-
-const generator = rough.generator();
-
-function createElement(id, x0, y0, x1, y1, elementType) {
-    let roughElement;
-    switch (elementType) {
-        case "pen":
-            roughElement = generator.line(x0, y0, x1, y1);
-            return { id, x0, y0, x1, y1, roughElement };
-        case "ellipse":
-            roughElement = generator.ellipse(x0, y0, x1 - x0, y1 - y0);
-            return { id, x0, y0, x1, y1, roughElement };
-        case "rectangle":
-            roughElement = generator.rectangle(x0, y0, x1 - x0, y1 - y0);
-            return { id, x0, y0, x1, y1, roughElement };
-        default:
-            throw new Error(`Type not recognised: ${element}`);
-    }
-}
-
-const useHistory = (state) => {
-    const [index, setIndex] = useState(0);
-    const [elements, setElements] = useState([state]);
-
-    const setState = (action, overwrite = false) => {
-        const newState =
-            typeof action === "function" ? action(elements[index]) : action;
-
-        if (overwrite) {
-            const elementsCopy = [...elements];
-            elementsCopy[index] = newState;
-            setElements(elementsCopy);
-        } else {
-            setElements((prevState) => [...prevState, newState]);
-            setIndex((prevState) => prevState + 1);
-        }
-    };
-
-    const undo = () => {
-        index > 0 && setIndex((prevState) => prevState - 1);
-    };
-
-    const redo = () => {
-        index < elements.length - 1 && setIndex((prevState) => prevState + 1);
-    };
-
-    return [elements[index], setState, undo, redo];
-};
+import { adjustElementCoordinates } from "./components/forms";
+import { cursorCoordenates, resizedCoordinater, getElementAtPosition } from "./components/coordenates";
+import { useHistory } from "./components/undoAndRedo";
+import { createElement } from "./components/createElement";
 
 function App() {
     const canvasRef = useRef(null);
     const [elements, setElements, undo, redo] = useHistory([]);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState("");
+    const [tool, setTool] = useState("");
     const [selectedElement, setSelectedElement] = useState(null);
 
     useLayoutEffect(() => {
@@ -74,87 +31,19 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
-    const distance = (variableOne, variableTwo) => {
-        Math.sqrt(
-            Math.pow(variableOne.clientX - variableTwo.clientX, 2) +
-            Math.pow(variableOne.clientY - variableTwo.clientY, 2)
-        );
-    };
-
-    const nearPoint = (x0, y0, x1, y1, quadrant) => {
-        return Math.abs(x0 - x1) < 5 && Math.abs(y0 - y1) < 5 ? quadrant : null;
-    };
-
     const updadeElement = (id, x0, y0, clientX, clientY, element) => {
-        try {
-            const changeElement = createElement(
-                id,
-                x0,
-                y0,
-                clientX,
-                clientY,
-                element
-            );
-            const elementsCopy = [...elements];
-            elementsCopy[id] = changeElement;
-            setElements(elementsCopy, true);
-        } catch (error) {
-            console.log(error)
-        }
+        const changeElement = createElement(
+            id,
+            x0,
+            y0,
+            clientX,
+            clientY,
+            element
+        );
+        const elementsCopy = [...elements];
+        elementsCopy[id] = changeElement;
+        setElements(elementsCopy, true);
 
-    };
-
-    const adjustElementCoordinates = (element) => {
-        const { shape } = element.roughElement;
-        const { x0, x1, y0, y1 } = element;
-        if (shape === "rectangle") {
-            const minX = Math.min(x0, x1);
-            const maxX = Math.max(x0, x1);
-            const minY = Math.min(y0, y1);
-            const maxY = Math.max(y0, y1);
-            return { x0: minX, y0: minY, x1: maxX, y1: maxY };
-        } else {
-            if (x0 < x1 || (x0 === x1 && y0 < y1)) {
-                return { x0, y0, x1, y1 };
-            } else {
-                return { x0: x1, y0: y1, x1: x0, y1: y0 };
-            }
-        }
-    };
-
-    const positionWithinElement = (clientX, clientY, element) => {
-        const { shape } = element.roughElement;
-        const { x0, x1, y0, y1 } = element;
-        if (shape === "rectangle" || shape === "line") {
-            const topLeft = nearPoint(clientX, clientY, x0, y0, "tl");
-            const topRight = nearPoint(clientX, clientY, x1, y0, "tr");
-            const bottomLeft = nearPoint(clientX, clientY, x0, y1, "bl");
-            const bottomRight = nearPoint(clientX, clientY, x1, y1, "br");
-
-            const inside =
-                clientX >= x0 && clientX <= x1 && clientY >= y0 && clientY <= y1
-                    ? "inside"
-                    : null;
-            return topLeft || topRight || bottomLeft || bottomRight || inside;
-        } else {
-            const a = { clientX: x0, clientY: y0 };
-            const b = { clientX: x1, clientY: y1 };
-            const c = { clientX, clientY };
-            const offset = distance(a, b) - (distance(a, c) - distance(b, c));
-            const start = nearPoint(clientX, clientY, x0, y0, "start");
-            const end = nearPoint(clientX, clientY, x1, y1, "end");
-            const inside = Math.abs(offset) < 1 ? "inside" : null;
-            return start || end || inside;
-        }
-    };
-
-    const getElementAtPosition = (clientX, clientY, elements) => {
-        return elements
-            .map((element) => ({
-                ...element,
-                position: positionWithinElement(clientX, clientY, element),
-            }))
-            .find((element) => element.position !== null);
     };
 
     const startDrawing = (event) => {
@@ -179,41 +68,10 @@ function App() {
                 clientY,
                 clientX,
                 clientY,
-                elementType
+                tool
             );
             setElements((prevState) => [...prevState, element]);
             setAction("drawing");
-        }
-    };
-
-    const cursorlala = (position) => {
-        switch (position) {
-            case "tl":
-            case "br":
-            case "start":
-            case "end":
-                return "nwse-resize";
-            case "tr":
-            case "bl":
-                return "nesw-resize";
-            default:
-                return "move";
-        }
-    };
-
-    const resizedCoordinater = (clientX, clientY, position, coordinates) => {
-        const { x0, x1, y0, y1 } = coordinates;
-        switch (position) {
-            case "tl" || "start":
-                return { x0: clientX, y0: clientY, x1, y1 };
-            case "tr":
-                return { x0, y0: clientY, x1: clientX, y1 };
-            case "br" || "end":
-                return { x0, y0, x1: clientX, y1: clientY };
-            case "bl":
-                return { x0: clientX, y0, x1, y1: clientY };
-            default:
-                return null;
         }
     };
 
@@ -222,14 +80,14 @@ function App() {
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             event.target.style.cursor = element
-                ? cursorlala(element.position)
+                ? cursorCoordenates(element.position)
                 : "default";
         }
 
         if (action === "drawing") {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
-            updadeElement(index, x0, y0, clientX, clientY, elementType);
+            updadeElement(index, x0, y0, clientX, clientY, tool);
         } else if (action === "moving") {
             const { id, x0, x1, y0, y1, offsetX, offsetY } = selectedElement;
             const { shape } = selectedElement.roughElement;
@@ -275,16 +133,13 @@ function App() {
     const userChoice = (element) => {
         switch (element) {
             case "rectangle":
-                setElementType("rectangle");
-                break;
+                return setTool("rectangle");
             case "ellipse":
-                setElementType("ellipse");
-                break;
+                return setTool("ellipse");
             case "select":
-                setElementType("select");
-                break;
-            case "pen":
-                setElementType("pen");
+                return setElementType("select");
+            case "line":
+                return setTool("line");
             default:
                 throw new Error(`Type not recognised: ${element}`);
         }
@@ -301,7 +156,7 @@ function App() {
             >
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => userChoice("pen")}
+                    onClick={() => userChoice("line")}
                 >
                     <FaPen />
                 </section>
