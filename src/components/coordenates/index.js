@@ -1,3 +1,5 @@
+import { nearPoint, distance } from "../forms";
+
 export const positionWithinElement = (clientX, clientY, element) => {
     const { shape } = element.roughElement;
     const { x0, x1, y0, y1 } = element;
@@ -21,5 +23,20 @@ export const positionWithinElement = (clientX, clientY, element) => {
         const end = nearPoint(clientX, clientY, x1, y1, "end");
         const inside = Math.abs(offset) < 1 ? "inside" : null;
         return start || end || inside;
+    }
+};
+
+export const cursorCoordenates = (position) => {
+    switch (position) {
+        case "tl":
+        case "br":
+        case "start":
+        case "end":
+            return "nwse-resize";
+        case "tr":
+        case "bl":
+            return "nesw-resize";
+        default:
+            return "move";
     }
 };
