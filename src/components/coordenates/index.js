@@ -1,6 +1,6 @@
 import { nearPoint, distance } from "../forms";
 
-export const positionWithinElement = (clientX, clientY, element) => {
+const positionWithinElement = (clientX, clientY, element) => {
     const { shape } = element.roughElement;
     const { x0, x1, y0, y1 } = element;
     if (shape === "rectangle" || shape === "line" || shape === "ellipse") {
@@ -55,4 +55,13 @@ export const resizedCoordinater = (clientX, clientY, position, coordinates) => {
         default:
             return null;
     }
+};
+
+export const getElementAtPosition = (clientX, clientY, elements) => {
+    return elements
+        .map((element) => ({
+            ...element,
+            position: positionWithinElement(clientX, clientY, element),
+        }))
+        .find((element) => element.position !== null);
 };
