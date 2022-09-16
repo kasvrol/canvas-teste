@@ -33,7 +33,6 @@ function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
     const border = { x: ellipseRadius.x + 10, y: ellipseRadius.y + 10 }
 
     const o = { x: x0 + ellipseRadius.x, y: y0 + ellipseRadius.y };
-    console.log('o', o.x, o.y)
 
     const clientRadius = { x: Math.abs(clientX - o.x), y: Math.abs(clientY - o.y) };
 
