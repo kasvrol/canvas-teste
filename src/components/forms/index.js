@@ -36,11 +36,9 @@ function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
 
     const clientRadius = { x: Math.abs(clientX - o.x), y: Math.abs(clientY - o.y) };
 
-    const ellipseData = {
+    return {
         ellipseRadius, ellipseInside, border, clientRadius, o
     }
-
-    return ellipseData
 };
 
 export const ellipseInsideOrOutside = (clientX, clientY, x0, y0, x1, y1) => {
