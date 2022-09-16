@@ -44,7 +44,7 @@ function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
     return ellipseData
 };
 
-export const ellipseInside = (clientX, clientY, x0, y0, x1, y1) => {
+export const ellipseInsideOrOutside = (clientX, clientY, x0, y0, x1, y1) => {
     const ellipse = ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1)
     let insideOrBorder
 
