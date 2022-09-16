@@ -1,9 +1,9 @@
-import { nearPoint, distance } from "../forms";
+import { nearPoint, distance, ellipseInside } from "../forms";
 
 const positionWithinElement = (clientX, clientY, element) => {
     const { shape } = element.roughElement;
     const { x0, x1, y0, y1 } = element;
-    if (shape === "rectangle" || shape === "line" || shape === "ellipse") {
+    if (shape === "rectangle" || shape === "line") {
         const topLeft = nearPoint(clientX, clientY, x0, y0, "tl", shape);
         const topRight = nearPoint(clientX, clientY, x1, y0, "tr", shape);
         const bottomLeft = nearPoint(clientX, clientY, x0, y1, "bl", shape);
@@ -13,7 +13,24 @@ const positionWithinElement = (clientX, clientY, element) => {
             clientX >= x0 && clientX <= x1 && clientY >= y0 && clientY <= y1
                 ? "inside"
                 : null;
+
         return topLeft || topRight || bottomLeft || bottomRight || inside;
+    } else if (shape === "ellipse") {
+        const point = ellipseInside(clientX, clientY, x0, y0, x1, y1)
+
+        const width = Math.abs((x1 - x0) / 2) //raio da abscissa
+        const height = Math.abs((y1 - y0) / 2) //raio da ordenada
+
+        const center = { x: x0 + width, y: y0 + height }
+
+        const quadrant = clientX < center.x && clientY < center.y ? "tl" : clientX > center.x && clientY < center.y ? "tr" : clientX > center.x && clientY > center.y ?
+            "br" : "bl"
+
+
+        const pointInOrOut = point > 1 ? null : point < 0.95 ? "inside" : quadrant
+
+        return pointInOrOut
+
     } else {
         const a = { clientX: x0, clientY: y0 };
         const b = { clientX: x1, clientY: y1 };
