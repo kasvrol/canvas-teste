@@ -48,8 +48,6 @@ export const ellipseInside = (clientX, clientY, x0, y0, x1, y1) => {
     const ellipse = ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1)
     let insideOrBorder
 
-    const inside = ellipse.clientRadius.x <= ellipse.ellipseRadius.x && ellipse.clientRadius.y <= ellipse.ellipseRadius.y ? true : false
-
     if (ellipse.clientRadius.x <= ellipse.ellipseInside.x && ellipse.clientRadius.y <= ellipse.ellipseInside.y) {
         insideOrBorder = 'inside'
     } else if (ellipse.clientRadius.x <= ellipse.border.x && ellipse.clientRadius.y <= ellipse.border.y) {
