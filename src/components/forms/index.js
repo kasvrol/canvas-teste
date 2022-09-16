@@ -5,24 +5,6 @@ export const distance = (variableOne, variableTwo) => {
     );
 };
 
-const centerX = (x0, x1) => {
-    switch ((x0, x1)) {
-        case x0 < x1:
-            return x0;
-        case x0 > x1:
-            return x1;
-    }
-};
-
-const centerY = (y0, y1) => {
-    switch ((y0, y1)) {
-        case y0 < y1:
-            return y0;
-        case y0 > y1:
-            return y1;
-    }
-};
-
 function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
     const ellipseRadius = {
         x: Math.abs((x1 - x0) / 2),
