@@ -43,27 +43,24 @@ function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
 
 export const ellipseInsideOrOutside = (clientX, clientY, x0, y0, x1, y1) => {
     const ellipse = ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1)
-    let insideOrBorder
 
-    if (ellipse.clientRadius.x <= ellipse.ellipseInside.x && ellipse.clientRadius.y <= ellipse.ellipseInside.y) {
-        insideOrBorder = 'inside'
-    } else if (ellipse.clientRadius.x <= ellipse.border.x && ellipse.clientRadius.y <= ellipse.border.y) {
-        if (clientX <= ellipse.o.x && clientY <= ellipse.o.y) {
-            return "tl"
-        } else if (ellipse.o.x <= clientX && clientY <= ellipse.o.y) {
-            return "tr"
-        } else if (clientX <= ellipse.o.x && ellipse.o.y <= clientY) {
-            return "bl"
-        } else if (ellipse.o.x <= clientX && ellipse.o.y <= clientY) {
-            return "br"
+    if (ellipse.clientRadius.x <= ellipse.border.x && ellipse.clientRadius.y <= ellipse.border.y) {
+        if (ellipse.clientRadius.x <= ellipse.ellipseInside.x && ellipse.clientRadius.y <= ellipse.ellipseInside.y) {
+            return 'inside';
+        } else {
+            if (clientX <= ellipse.o.x && clientY <= ellipse.o.y) {
+                return "tl"
+            } else if (ellipse.o.x <= clientX && clientY <= ellipse.o.y) {
+                return "tr"
+            } else if (clientX <= ellipse.o.x && ellipse.o.y <= clientY) {
+                return "bl"
+            } else if (ellipse.o.x <= clientX && ellipse.o.y <= clientY) {
+                return "br"
+            }
         }
     } else {
-        insideOrBorder = null
+        return null;
     }
-
-    console.log(insideOrBorder)
-
-    return insideOrBorder
 };
 
 export const nearPoint = (x0, y0, x1, y1, quadrant, shape) => {
