@@ -23,6 +23,27 @@ const centerY = (y0, y1) => {
     }
 };
 
+function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
+    const ellipseRadius = {
+        x: Math.abs((x1 - x0) / 2),
+        y: Math.abs((y1 - y0) / 2),
+    };
+
+    const ellipseInside = { x: ellipseRadius.x - 10, y: ellipseRadius.y - 10 }
+    const border = { x: ellipseRadius.x + 10, y: ellipseRadius.y + 10 }
+
+    const o = { x: x0 + ellipseRadius.x, y: y0 + ellipseRadius.y };
+    console.log('o', o.x, o.y)
+
+    const clientRadius = { x: Math.abs(clientX - o.x), y: Math.abs(clientY - o.y) };
+
+    const ellipseData = {
+        ellipseRadius, ellipseInside, border, clientRadius
+    }
+
+    return ellipseData
+};
+
 export const ellipseInside = (clientX, clientY, x0, y0, x1, y1) => {
     const a = Math.abs((x1 - x0) / 2); //distancia entre a origem e o vertice das abscissas 
     const b = Math.abs((y1 - y0) / 2);//distancia entre a origem e o vertice das ordenadas
