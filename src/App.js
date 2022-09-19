@@ -1,22 +1,23 @@
-import { useLayoutEffect, useRef, useState, useEffect } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
 import { GrSelect } from "react-icons/gr";
 import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
 import { adjustElementCoordinates } from "./components/forms";
-import { cursorCoordenates, resizedCoordinater, getElementAtPosition } from "./components/coordenates";
+import {
+    cursorCoordenates,
+    resizedCoordinater,
+    getElementAtPosition,
+} from "./components/coordenates";
 import { useHistory } from "./components/undoAndRedo";
 import { createElement } from "./components/createElement";
-import "./style/app.css"
-
+import "./style/app.css";
 function App() {
     const canvasRef = useRef(null);
-    const constextRef = useRef(null);
     const [elements, setElements, undo, redo] = useHistory([]);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState("");
     const [tool, setTool] = useState("");
     const [selectedElement, setSelectedElement] = useState(null);
-    const [isDrawing, setIsDrawing] = useState(false);
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -34,17 +35,6 @@ function App() {
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
 
-    useEffect(() => {
-        /*** CONFIGURAÇÃO DA TELA ***/
-        const canvas = canvasRef.current;
-
-        const context = canvas.getContext("2d");
-        context.lineCap = "round";
-        context.strokeStyle = "black";
-        context.lineWidth = "5px";
-        constextRef.current = context;
-    }, []);
-
     const updadeElement = (id, x0, y0, clientX, clientY, element) => {
         const changeElement = createElement(
             id,
@@ -57,11 +47,10 @@ function App() {
         const elementsCopy = [...elements];
         elementsCopy[id] = changeElement;
         setElements(elementsCopy, true);
-
     };
 
     const startDrawing = (event) => {
-        const { clientX, clientY } = event
+        const { clientX, clientY } = event;
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             if (element) {
@@ -87,15 +76,10 @@ function App() {
             setElements((prevState) => [...prevState, element]);
             setAction("drawing");
         }
-        else if (elementType === 'pen') {
-            constextRef.current.beginPath();
-            constextRef.current.moveTo(clientX, clientY);
-            setIsDrawing(true);
-        }
     };
 
     const drawing = (event) => {
-        const { clientX, clientY } = event
+        const { clientX, clientY } = event;
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             event.target.style.cursor = element
@@ -103,15 +87,10 @@ function App() {
                 : "default";
         }
 
-        if (action === "drawing" && tool != 'pen') {
+        if (action === "drawing") {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
             updadeElement(index, x0, y0, clientX, clientY, tool);
-        } else if (isDrawing) {
-            constextRef.current.lineTo(clientX, clientY);
-            constextRef.current.stroke();
-        } else if (!isDrawing) {
-            return
         } else if (action === "moving") {
             const { id, x0, x1, y0, y1, offsetX, offsetY } = selectedElement;
             const { shape } = selectedElement.roughElement;
@@ -151,10 +130,6 @@ function App() {
             );
             updadeElement(id, x0, y0, x1, y1, shape);
         }
-        if (isDrawing) {
-            constextRef.current.closePath();
-            setIsDrawing(false);
-        }
         setAction("none");
         setSelectedElement(null);
     };
@@ -162,15 +137,13 @@ function App() {
     const userChoice = (element) => {
         switch (element) {
             case "rectangle":
-                return setTool("rectangle") && setElementType("");
+                return setTool("rectangle");
             case "ellipse":
-                return setTool("ellipse") && setElementType("");
+                return setTool("ellipse");
             case "select":
                 return setElementType("select");
             case "line":
-                return setTool("line") && setElementType("");
-            case "pen":
-                return setElementType("pen") && setTool("");
+                return setTool("line");
             default:
                 throw new Error(`Type not recognised: ${element}`);
         }
@@ -178,12 +151,10 @@ function App() {
 
     return (
         <>
-            <div
-                className="menu"
-            >
+            <div className="menu">
                 <section
                     className="menu-button"
-                    onClick={() => userChoice("pen")}
+                    onClick={() => userChoice("line")}
                 >
                     <FaPen />
                 </section>
@@ -213,6 +184,7 @@ function App() {
                 </section>
             </div>
             <canvas
+                className="canvas"
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={drawing}
