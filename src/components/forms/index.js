@@ -9,25 +9,20 @@ function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
 
 
     const ellipseRadius = {
-        x: Math.abs((x1 - x0)),
-        y: Math.abs((y1 - y0)),
+        x: Math.abs((x1 - x0) / 2),
+        y: Math.abs((y1 - y0) / 2),
     };
-    console.log('xo e yo', x0, y0, x1, y1)
-    console.log('ellipseRadius', ellipseRadius)
 
-    const realX0Y0 = { x: x0 - ellipseRadius.x, y: y0 - ellipseRadius.y }
-    console.log('realX0Y0', realX0Y0)
-    const ellipseInside = { x: ellipseRadius.x - 10, y: ellipseRadius.y - 10 }
+    const ellipseInside = { x: ellipseRadius.x - 2, y: ellipseRadius.y - 2 }
 
-    const border = { x: ellipseRadius.x + 10, y: ellipseRadius.y + 10 }
+    const border = { x: ellipseRadius.x + 7, y: ellipseRadius.y + 7 }
 
-    console.log('inside e outside', ellipseInside, border)
-    const o = { x: x0, y: y0 };
-    console.log('origem', o)
+    const o = { x: x0, y: y0 + (ellipseRadius.y / 2) };
+
     const clientRadius = { x: Math.abs(clientX - o.x), y: Math.abs(clientY - o.y) };
 
     return {
-        ellipseRadius, ellipseInside, border, clientRadius, o, realX0Y0
+        ellipseRadius, ellipseInside, border, clientRadius, o
     }
 };
 
