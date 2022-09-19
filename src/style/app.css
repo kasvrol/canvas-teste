@@ -1,0 +1,15 @@
+.menu {
+	display: flex;
+	width: 45vw;
+	justify-content: space-evenly;
+}
+
+.menu-button {
+	cursor: pointer;
+}
+
+canvas {
+	background: red;
+	width: 100%;
+	height: 100%;
+}

@@ -6,6 +6,7 @@ import { adjustElementCoordinates } from "./components/forms";
 import { cursorCoordenates, resizedCoordinater, getElementAtPosition } from "./components/coordenates";
 import { useHistory } from "./components/undoAndRedo";
 import { createElement } from "./components/createElement";
+import "./style/app.css"
 
 function App() {
     const canvasRef = useRef(null);
@@ -178,45 +179,40 @@ function App() {
     return (
         <>
             <div
-                style={{
-                    display: "flex",
-                    width: "45vw",
-                    justifyContent: "space-evenly",
-                }}
+                className="menu"
             >
                 <section
-                    style={{ cursor: "pointer" }}
+                    className="menu-button"
                     onClick={() => userChoice("pen")}
                 >
                     <FaPen />
                 </section>
                 <section
-                    style={{ cursor: "pointer" }}
+                    className="menu-button"
                     onClick={() => userChoice("ellipse")}
                 >
                     <FaCircle />
                 </section>
                 <section
-                    style={{ cursor: "pointer" }}
+                    className="menu-button"
                     onClick={() => userChoice("rectangle")}
                 >
                     <FaSquare />
                 </section>
-                <section style={{ cursor: "pointer" }} onClick={undo}>
+                <section className="menu-button" onClick={undo}>
                     <FaUndo />
                 </section>
-                <section style={{ cursor: "pointer" }} onClick={redo}>
+                <section className="menu-button" onClick={redo}>
                     <FaRedo />
                 </section>
                 <section
-                    style={{ cursor: "pointer" }}
+                    className="menu-button"
                     onClick={() => userChoice("select")}
                 >
                     <GrSelect />
                 </section>
             </div>
             <canvas
-                style={{ background: "red" }}
                 ref={canvasRef}
                 onMouseDown={startDrawing}
                 onMouseMove={drawing}
