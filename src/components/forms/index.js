@@ -13,11 +13,11 @@ function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
         y: Math.abs((y1 - y0) / 2),
     };
 
-    const ellipseInside = { x: ellipseRadius.x - 2, y: ellipseRadius.y - 2 }
+    const ellipseInside = { x: ellipseRadius.x - 7, y: ellipseRadius.y - 7 }
 
     const border = { x: ellipseRadius.x + 7, y: ellipseRadius.y + 7 }
 
-    const o = { x: x0, y: y0 + (ellipseRadius.y / 2) };
+    const o = { x: x0, y: y0 };
 
     const clientRadius = { x: Math.abs(clientX - o.x), y: Math.abs(clientY - o.y) };
 
