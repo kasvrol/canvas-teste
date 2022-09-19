@@ -9,7 +9,8 @@ export const createElement = (id, x0, y0, x1, y1, tool) => {
             roughElement = generator.line(x0, y0, x1, y1);
             return { id, x0, y0, x1, y1, roughElement };
         case "ellipse":
-            roughElement = generator.ellipse(x0, y0, x1 - x0, y1 - y0);
+            const radius = (x1 - x0)
+            roughElement = generator.ellipse(x0, y0, radius, radius);
             return { id, x0, y0, x1, y1, roughElement };
         case "rectangle":
             roughElement = generator.rectangle(x0, y0, x1 - x0, y1 - y0);

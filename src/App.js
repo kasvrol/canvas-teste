@@ -49,7 +49,7 @@ function App() {
     };
 
     const startDrawing = (event) => {
-        const { clientX, clientY } = event;
+        const { clientX, clientY } = event
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             if (element) {
@@ -78,7 +78,7 @@ function App() {
     };
 
     const drawing = (event) => {
-        const { clientX, clientY } = event;
+        const { clientX, clientY } = event
         setCoordenateX(clientX)
         setCoordenateY(clientY)
         if (elementType === "select") {
