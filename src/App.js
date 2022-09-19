@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import rough from "roughjs/bundled/rough.esm";
 import { GrSelect } from "react-icons/gr";
 import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
@@ -9,6 +9,7 @@ import { createElement } from "./components/createElement";
 
 function App() {
     const canvasRef = useRef(null);
+    const constextRef = useRef(null);
     const [elements, setElements, undo, redo] = useHistory([]);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState("");
@@ -16,6 +17,7 @@ function App() {
     const [selectedElement, setSelectedElement] = useState(null);
     const [coordenateX, setCoordenateX] = useState(0);
     const [coordenateY, setCoordenateY] = useState(0);
+    const [isDrawing, setIsDrawing] = useState(false);
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -32,6 +34,17 @@ function App() {
 
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements]);
+
+    useEffect(() => {
+        /*** CONFIGURAÇÃO DA TELA ***/
+        const canvas = canvasRef.current;
+
+        const context = canvas.getContext("2d");
+        context.lineCap = "round";
+        context.strokeStyle = "black";
+        context.lineWidth = "5px";
+        constextRef.current = context;
+    }, []);
 
     const updadeElement = (id, x0, y0, clientX, clientY, element) => {
         const changeElement = createElement(
@@ -75,6 +88,11 @@ function App() {
             setElements((prevState) => [...prevState, element]);
             setAction("drawing");
         }
+        else if (elementType === 'pen') {
+            constextRef.current.beginPath();
+            constextRef.current.moveTo(clientX, clientY);
+            setIsDrawing(true);
+        }
     };
 
     const drawing = (event) => {
@@ -88,10 +106,15 @@ function App() {
                 : "default";
         }
 
-        if (action === "drawing") {
+        if (action === "drawing" && tool != 'pen') {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
             updadeElement(index, x0, y0, clientX, clientY, tool);
+        } else if (isDrawing) {
+            constextRef.current.lineTo(clientX, clientY);
+            constextRef.current.stroke();
+        } else if (!isDrawing) {
+            return
         } else if (action === "moving") {
             const { id, x0, x1, y0, y1, offsetX, offsetY } = selectedElement;
             const { shape } = selectedElement.roughElement;
@@ -131,6 +154,10 @@ function App() {
             );
             updadeElement(id, x0, y0, x1, y1, shape);
         }
+        if (isDrawing) {
+            constextRef.current.closePath();
+            setIsDrawing(false);
+        }
         setAction("none");
         setSelectedElement(null);
     };
@@ -138,13 +165,15 @@ function App() {
     const userChoice = (element) => {
         switch (element) {
             case "rectangle":
-                return setTool("rectangle");
+                return setTool("rectangle") && setElementType("");
             case "ellipse":
-                return setTool("ellipse");
+                return setTool("ellipse") && setElementType("");
             case "select":
                 return setElementType("select");
             case "line":
-                return setTool("line");
+                return setTool("line") && setElementType("");
+            case "pen":
+                return setElementType("pen") && setTool("");
             default:
                 throw new Error(`Type not recognised: ${element}`);
         }
@@ -161,7 +190,7 @@ function App() {
             >
                 <section
                     style={{ cursor: "pointer" }}
-                    onClick={() => userChoice("line")}
+                    onClick={() => userChoice("pen")}
                 >
                     <FaPen />
                 </section>
