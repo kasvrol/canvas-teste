@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
 import { GrSelect } from "react-icons/gr";
 import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
@@ -13,27 +13,28 @@ import { createElement } from "./components/createElement";
 import "./style/app.css";
 function App() {
     const canvasRef = useRef(null);
+    const constextRef = useRef(null);
     const [elements, setElements, undo, redo] = useHistory([]);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState("");
     const [tool, setTool] = useState("");
     const [selectedElement, setSelectedElement] = useState(null);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const canvas = canvasRef.current;
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         const context = canvas.getContext("2d");
-        // context.lineCap = "round";
-        // context.strokeStyle = "black";
-        // context.lineWidth = "100px";
+        context.lineCap = "round";
+        context.strokeStyle = "black";
+        context.lineWidth = "5px";
+        constextRef.current = context;
 
         context.clearRect(0, 0, canvas.width, canvas.height);
         const roughtCanvas = rough.canvas(canvas);
-
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
-    }, [elements]);
+    }, [elements])
 
     const updadeElement = (id, x0, y0, clientX, clientY, element) => {
         const changeElement = createElement(
