@@ -15,8 +15,6 @@ function App() {
     const [elementType, setElementType] = useState("");
     const [tool, setTool] = useState("");
     const [selectedElement, setSelectedElement] = useState(null);
-    const [coordenateX, setCoordenateX] = useState(0);
-    const [coordenateY, setCoordenateY] = useState(0);
     const [isDrawing, setIsDrawing] = useState(false);
 
     useLayoutEffect(() => {
@@ -97,8 +95,6 @@ function App() {
 
     const drawing = (event) => {
         const { clientX, clientY } = event
-        setCoordenateX(clientX)
-        setCoordenateY(clientY)
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             event.target.style.cursor = element
@@ -217,12 +213,6 @@ function App() {
                     onClick={() => userChoice("select")}
                 >
                     <GrSelect />
-                </section>
-                <section>
-                    <p>{coordenateX}</p>
-                </section>
-                <section>
-                    <p>{coordenateY}</p>
                 </section>
             </div>
             <canvas
