@@ -60,7 +60,7 @@ function App() {
                     setAction("resizing");
                 }
             }
-        } else if (tool) {
+        } else {
             const id = elements.length;
             const element = createElement(
                 id,
