@@ -137,13 +137,19 @@ function App() {
     const userChoice = (element) => {
         switch (element) {
             case "rectangle":
-                return setTool("rectangle");
+                setTool("rectangle");
+                setElementType("");
+                break;
             case "ellipse":
-                return setTool("ellipse");
+                setTool("ellipse");
+                setElementType("");
+                break;
             case "select":
                 return setElementType("select");
             case "line":
-                return setTool("line");
+                setTool("line")
+                setElementType("");
+                break;
             default:
                 throw new Error(`Type not recognised: ${element}`);
         }
