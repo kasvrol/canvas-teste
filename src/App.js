@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
 import { GrSelect } from "react-icons/gr";
-import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen } from "react-icons/fa";
+import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen, FaTrashAlt } from "react-icons/fa";
 import { adjustElementCoordinates } from "./components/forms";
 import {
     cursorCoordenates,
@@ -199,7 +199,7 @@ function App() {
                     className="menu-button"
                     onClick={() => clear()}
                 >
-                    <GrSelect />
+                    <FaTrashAlt />
                 </section>
             </div>
             <canvas
