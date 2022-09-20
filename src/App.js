@@ -31,7 +31,7 @@ function App() {
         context.lineWidth = "5px";
         constextRef.current = context;
 
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        constextRef.current.clearRect(0, 0, canvas.width, canvas.height);
         const roughtCanvas = rough.canvas(canvas);
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
     }, [elements])
@@ -156,6 +156,12 @@ function App() {
         }
     };
 
+    const clear = () => {
+        constextRef.current.clearRect(0, 0, constextRef.current.canvas.width, constextRef.current.canvas.height)
+        setElements([])
+        console.log(undo, redo, elements)
+    }
+
     return (
         <>
             <div className="menu">
@@ -186,6 +192,12 @@ function App() {
                 <section
                     className="menu-button"
                     onClick={() => userChoice("select")}
+                >
+                    <GrSelect />
+                </section>
+                <section
+                    className="menu-button"
+                    onClick={() => clear()}
                 >
                     <GrSelect />
                 </section>
