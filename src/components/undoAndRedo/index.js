@@ -13,7 +13,8 @@ export const useHistory = (state) => {
             elementsCopy[index] = newState;
             setElements(elementsCopy);
         } else {
-            setElements((prevState) => [...prevState, newState]);
+            const updatedState = [...elements].slice(0, index + 1);
+            setElements([...updatedState, newState]);
             setIndex((prevState) => prevState + 1);
         }
     };
