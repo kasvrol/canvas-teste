@@ -75,6 +75,7 @@ function App() {
                 tool
             );
             setElements((prevState) => [...prevState, element]);
+            setSelectedElement(element);
             setAction("drawing");
         }
     };
@@ -121,8 +122,8 @@ function App() {
     };
 
     const finishDrawing = () => {
-        const index = elements.length - 1;
-        if (!elements[index]) return;
+        if (!selectedElement) return;
+        const index = selectedElement.id;
         const { id } = elements[index];
         const { shape } = elements[index].roughElement;
         if (action === "drawing") {
@@ -159,7 +160,7 @@ function App() {
     const clear = () => {
         constextRef.current.clearRect(0, 0, constextRef.current.canvas.width, constextRef.current.canvas.height)
         setElements([])
-        console.log(undo, redo, elements)
+        console.log(undo, redo, elements, selectedElement)
     }
 
     return (
