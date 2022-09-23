@@ -15,7 +15,7 @@ function App() {
     const initialState = []
     const canvasRef = useRef(null);
     const constextRef = useRef(null);
-    const [elements, setElements, undo, redo] = useHistory(initialState);
+    const [elements, setElements, undo, redo, clear] = useHistory(initialState);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState("");
     const [tool, setTool] = useState("");
@@ -133,7 +133,6 @@ function App() {
             );
             updadeElement(id, x0, y0, x1, y1, shape);
         }
-        console.log('elements', elements)
         setAction("none");
         setSelectedElement(null);
     };
@@ -158,11 +157,6 @@ function App() {
                 throw new Error(`Type not recognised: ${element}`);
         }
     };
-
-    const clear = () => {
-        constextRef.current.clearRect(0, 0, constextRef.current.canvas.width, constextRef.current.canvas.height)
-        setElements([...initialState])
-    }
 
     return (
         <>
@@ -199,7 +193,7 @@ function App() {
                 </section>
                 <section
                     className="menu-button"
-                    onClick={() => clear()}
+                    onClick={clear}
                 >
                     <FaTrashAlt />
                 </section>

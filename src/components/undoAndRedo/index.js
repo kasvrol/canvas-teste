@@ -20,20 +20,6 @@ export const useHistory = (state) => {
         }
     };
 
-    const clear = () => {
-        const filterElement = elements.filter(element => element.length === 0)
-        if (1 < filterElement.length) {
-            try {
-                setIndex(0)
-                setElements([initialState])
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    }
-
-    clear()
-
     const undo = () => {
         index > 0 && setIndex((prevState) => prevState - 1);
     };
@@ -42,5 +28,10 @@ export const useHistory = (state) => {
         index < elements.length - 1 && setIndex((prevState) => prevState + 1);
     };
 
-    return [elements[index], setState, undo, redo];
+    const clear = () => {
+        setIndex(0)
+        setElements([initialState])
+    };
+
+    return [elements[index], setState, undo, redo, clear];
 };
