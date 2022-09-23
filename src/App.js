@@ -12,9 +12,10 @@ import { useHistory } from "./components/undoAndRedo";
 import { createElement } from "./components/createElement";
 import "./style/app.css";
 function App() {
+    const initialState = []
     const canvasRef = useRef(null);
     const constextRef = useRef(null);
-    const [elements, setElements, undo, redo] = useHistory([]);
+    const [elements, setElements, undo, redo] = useHistory(initialState);
     const [action, setAction] = useState("none");
     const [elementType, setElementType] = useState("");
     const [tool, setTool] = useState("");
@@ -132,6 +133,7 @@ function App() {
             );
             updadeElement(id, x0, y0, x1, y1, shape);
         }
+        console.log('elements', elements)
         setAction("none");
         setSelectedElement(null);
     };
@@ -159,8 +161,7 @@ function App() {
 
     const clear = () => {
         constextRef.current.clearRect(0, 0, constextRef.current.canvas.width, constextRef.current.canvas.height)
-        setElements([])
-        console.log(undo, redo, elements, selectedElement)
+        setElements([...initialState])
     }
 
     return (
