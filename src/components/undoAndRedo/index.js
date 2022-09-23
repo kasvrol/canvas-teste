@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export const useHistory = (state) => {
+    const initialState = []
     const [index, setIndex] = useState(0);
     const [elements, setElements] = useState([state]);
 
@@ -18,6 +19,20 @@ export const useHistory = (state) => {
             setIndex((prevState) => prevState + 1);
         }
     };
+
+    const clear = () => {
+        const filterElement = elements.filter(element => element.length === 0)
+        if (1 < filterElement.length) {
+            try {
+                setIndex(0)
+                setElements([initialState])
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+
+    clear()
 
     const undo = () => {
         index > 0 && setIndex((prevState) => prevState - 1);
