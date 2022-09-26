@@ -12,8 +12,6 @@ em construção...
 
 ## Para avaliar o projeto em sua máquina
 
-In the project directory, you can run:
-
 Clonar o repositório em sua máquina com git bash:
 
 `git clone https://github.com/kasvrol/tela-de-desenho.git`
