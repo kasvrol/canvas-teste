@@ -14,20 +14,20 @@ em construção...
 
 In the project directory, you can run:
 
-clonar o repositório em sua máquina:
+Clonar o repositório em sua máquina com git bash:
 
-`git clone url`
+`git clone https://github.com/kasvrol/tela-de-desenho.git`
 
-entrar no diretório clonado
+Entrar no diretório clonado em sua máquina através do comando pelo git bash:
 
 `cd ./nomeDoRepositório`
 
-baixar as bibliotecas:
+Baixar as bibliotecas do projeto com o comando:
 
 `npm i`
 
-rodar o projeto em sua máquina:
+E para rodar o projeto em sua máquina, digite o comando:
 
 `npm start`
 
-entrar na url [http://localhost:3000](http://localhost:3000) para visualizar o projeto.
+Se o projeto não abrir com o seu browser automaticamente, digite no campo de busca de seu browser a url: [http://localhost:3000](http://localhost:3000).
