@@ -18,7 +18,6 @@ const positionWithinElement = (clientX, clientY, element) => {
 
     } else if (shape === "ellipse") {
         const elipse = ellipseInsideOrOutside(clientX, clientY, x0, y0, x1, y1)
-        console.log(elipse)
         return elipse
     } else {
         const a = { clientX: x0, clientY: y0 };
