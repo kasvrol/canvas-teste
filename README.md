@@ -1,31 +1,45 @@
-# Tela de desenho
+<h1>Tela de desenho</h1>
 
-em construção...
+<h2>Sobre o projeto:</h2>
+<p>Projeto criado com o objetivo de criar desenhos de formas geométricas na interface com o usuário podendo editar a forma após ela estar renderizada na tela.</p>
+<p>O software foi criado com base nos <a href="https://www.youtube.com/watch?v=6arkndScw7A&list=PLSxgVLtIB0IFmQGuVMSE_wDHPW5rq4Ik7">vídeos desta playlist</a> e <a href="https://www.youtube.com/watch?v=FLESHMJ-bI0">neste vídeo</a>.</p>
 
-## Ferramentas utilizadas:
+<h2>Ferramentas utilizadas:</h2>
 
--   Git (para versionar o código)
--   JavaScript (linguagem utilizada)
+-   [Git](https://git-scm.com/)
 -   [React App](https://github.com/facebook/create-react-app)
--   Node (para download das bibliotecas)
--   roughjs (biblioteca para auxilio na criação de formas geométricas)
+-   [Node](https://nodejs.org/en/)
+-   [roughjs](https://roughjs.com/)
 
-## Para avaliar o projeto em sua máquina
+<h2>Para avaliar o projeto em sua máquina:</h2>
 
-Clonar o repositório em sua máquina com git bash:
+<p>Clonar o repositório em sua máquina com git bash:</p>
 
-`git clone https://github.com/kasvrol/tela-de-desenho.git`
+```bash
+git clone https://github.com/kasvrol/tela-de-desenho.git
+```
 
-Entrar no diretório clonado em sua máquina através do comando pelo git bash:
+<p>Entrar no diretório clonado em sua máquina através do comando pelo git bash:</p>
 
-`cd ./nomeDoRepositório`
+```bash
+cd ./tela-de-desenho
+```
 
-Baixar as bibliotecas do projeto com o comando:
+<p>Baixar as bibliotecas do projeto com o comando:</p>
 
-`npm i`
+```bash
+npm i
+```
 
-E para rodar o projeto em sua máquina, digite o comando:
+<p>E para rodar o projeto em sua máquina, digite o comando:</p>
 
-`npm start`
+```bash
+npm start
+```
 
-Se o projeto não abrir com o seu browser automaticamente, digite no campo de busca de seu browser a url: [http://localhost:3000](http://localhost:3000).
+<p>Se o projeto não abrir com o seu browser automaticamente, digite no campo de busca de seu browser a url: <a href="http://localhost:3000">http://localhost:3000</a>.</p>
+
+<h2>Contato:</h2>
+
+-   [Linkedin](https://www.linkedin.com/in/kasvrol/)
+-   [Email](santosak1999@gmail.com)
