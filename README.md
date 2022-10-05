@@ -4,6 +4,8 @@
 <p>Projeto criado com o objetivo de criar desenhos de formas geométricas na interface com o usuário podendo editar a forma após ela estar renderizada na tela.</p>
 <p>O software foi criado com base nos <a href="https://www.youtube.com/watch?v=6arkndScw7A&list=PLSxgVLtIB0IFmQGuVMSE_wDHPW5rq4Ik7">vídeos desta playlist</a> e <a href="https://www.youtube.com/watch?v=FLESHMJ-bI0">neste vídeo</a>.</p>
 
+![Print 01](https://github.com/kasvrol/tela-de-desenho/blob/main/src/img/print.png)
+
 <h2>Ferramentas utilizadas:</h2>
 
 -   [Git](https://git-scm.com/)
