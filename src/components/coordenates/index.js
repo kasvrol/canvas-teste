@@ -1,4 +1,4 @@
-import { nearPoint, distance, ellipseInsideOrOutside } from "../forms";
+import { nearPoint, distance, circleInsideOrOutside } from "../forms";
 
 const positionWithinElement = (clientX, clientY, element) => {
     const { shape } = element.roughElement;
@@ -16,8 +16,8 @@ const positionWithinElement = (clientX, clientY, element) => {
 
         return topLeft || topRight || bottomLeft || bottomRight || inside;
 
-    } else if (shape === "ellipse") {
-        const elipse = ellipseInsideOrOutside(clientX, clientY, x0, y0, x1, y1)
+    } else if (shape === "circle") {
+        const elipse = circleInsideOrOutside(clientX, clientY, x0, y0, x1, y1)
         return elipse
     } else {
         const a = { clientX: x0, clientY: y0 };

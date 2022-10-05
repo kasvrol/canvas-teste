@@ -5,41 +5,41 @@ export const distance = (variableOne, variableTwo) => {
     );
 };
 
-function ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
+function circleInsideAndBorder(clientX, clientY, x0, y0, x1, y1) {
 
 
-    const ellipseRadius = {
+    const circleRadius = {
         x: Math.abs((x1 - x0) / 2),
         y: Math.abs((y1 - y0) / 2),
     };
 
-    const ellipseInside = { x: ellipseRadius.x - 7, y: ellipseRadius.y - 7 }
+    const circleInside = { x: circleRadius.x - 7, y: circleRadius.y - 7 }
 
-    const border = { x: ellipseRadius.x + 7, y: ellipseRadius.y + 7 }
+    const border = { x: circleRadius.x + 7, y: circleRadius.y + 7 }
 
     const o = { x: x0, y: y0 };
 
     const clientRadius = { x: Math.abs(clientX - o.x), y: Math.abs(clientY - o.y) };
 
     return {
-        ellipseRadius, ellipseInside, border, clientRadius, o
+        circleRadius, circleInside, border, clientRadius, o
     }
 };
 
-export const ellipseInsideOrOutside = (clientX, clientY, x0, y0, x1, y1) => {
-    const ellipse = ellipseInsideAndBorder(clientX, clientY, x0, y0, x1, y1)
+export const circleInsideOrOutside = (clientX, clientY, x0, y0, x1, y1) => {
+    const circle = circleInsideAndBorder(clientX, clientY, x0, y0, x1, y1)
 
-    if (ellipse.clientRadius.x <= ellipse.border.x && ellipse.clientRadius.y <= ellipse.border.y) {
-        if (ellipse.clientRadius.x <= ellipse.ellipseInside.x && ellipse.clientRadius.y <= ellipse.ellipseInside.y) {
+    if (circle.clientRadius.x <= circle.border.x && circle.clientRadius.y <= circle.border.y) {
+        if (circle.clientRadius.x <= circle.circleInside.x && circle.clientRadius.y <= circle.circleInside.y) {
             return 'inside';
         } else {
-            if (clientX <= ellipse.o.x && clientY <= ellipse.o.y) {
+            if (clientX <= circle.o.x && clientY <= circle.o.y) {
                 return "tl"
-            } else if (ellipse.o.x <= clientX && clientY <= ellipse.o.y) {
+            } else if (circle.o.x <= clientX && clientY <= circle.o.y) {
                 return "tr"
-            } else if (clientX <= ellipse.o.x && ellipse.o.y <= clientY) {
+            } else if (clientX <= circle.o.x && circle.o.y <= clientY) {
                 return "bl"
-            } else if (ellipse.o.x <= clientX && ellipse.o.y <= clientY) {
+            } else if (circle.o.x <= clientX && circle.o.y <= clientY) {
                 return "br"
             }
         }
@@ -63,7 +63,7 @@ export const nearPoint = (x0, y0, x1, y1, quadrant, shape) => {
 export const adjustElementCoordinates = (element) => {
     const { shape } = element.roughElement;
     const { x0, x1, y0, y1 } = element;
-    if (shape === "rectangle" || shape === "ellipse") {
+    if (shape === "rectangle" || shape === "circle") {
         const minX = Math.min(x0, x1);
         const maxX = Math.max(x0, x1);
         const minY = Math.min(y0, y1);

@@ -143,8 +143,8 @@ function App() {
                 setTool("rectangle");
                 setElementType("");
                 break;
-            case "ellipse":
-                setTool("ellipse");
+            case "circle":
+                setTool("circle");
                 setElementType("");
                 break;
             case "select":
@@ -169,7 +169,7 @@ function App() {
                 </section>
                 <section
                     className="menu-button"
-                    onClick={() => userChoice("ellipse")}
+                    onClick={() => userChoice("circle")}
                 >
                     <FaCircle />
                 </section>
