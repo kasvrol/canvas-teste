@@ -15,10 +15,9 @@ const positionWithinElement = (clientX, clientY, element) => {
                 : null;
 
         return topLeft || topRight || bottomLeft || bottomRight || inside;
-
     } else if (shape === "circle") {
-        const elipse = circleInsideOrOutside(clientX, clientY, x0, y0, x1, y1)
-        return elipse
+        const elipse = circleInsideOrOutside(clientX, clientY, x0, y0, x1, y1);
+        return elipse;
     } else {
         const a = { clientX: x0, clientY: y0 };
         const b = { clientX: x1, clientY: y1 };
@@ -28,21 +27,6 @@ const positionWithinElement = (clientX, clientY, element) => {
         const end = nearPoint(clientX, clientY, x1, y1, "end");
         const inside = Math.abs(offset) < 1 ? "inside" : null;
         return start || end || inside;
-    }
-};
-
-export const cursorCoordenates = (position) => {
-    switch (position) {
-        case "tl":
-        case "br":
-        case "start":
-        case "end":
-            return "nwse-resize";
-        case "tr":
-        case "bl":
-            return "nesw-resize";
-        default:
-            return "move";
     }
 };
 

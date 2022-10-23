@@ -1,10 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import rough from "roughjs/bundled/rough.esm";
 import { GrSelect } from "react-icons/gr";
-import { FaRedo, FaUndo, FaSquare, FaCircle, FaPen, FaTrashAlt } from "react-icons/fa";
+import {
+    FaRedo,
+    FaUndo,
+    FaSquare,
+    FaCircle,
+    FaPen,
+    FaTrashAlt,
+} from "react-icons/fa";
 import { adjustElementCoordinates } from "./components/forms";
 import {
-    cursorCoordenates,
     resizedCoordinater,
     getElementAtPosition,
 } from "./components/coordenates";
@@ -12,7 +18,7 @@ import { useHistory } from "./components/undoAndRedo";
 import { createElement } from "./components/createElement";
 import "./style/app.css";
 function App() {
-    const initialState = []
+    const initialState = [];
     const canvasRef = useRef(null);
     const constextRef = useRef(null);
     const [elements, setElements, undo, redo, clear] = useHistory(initialState);
@@ -35,7 +41,7 @@ function App() {
         constextRef.current.clearRect(0, 0, canvas.width, canvas.height);
         const roughtCanvas = rough.canvas(canvas);
         elements.forEach(({ roughElement }) => roughtCanvas.draw(roughElement));
-    }, [elements])
+    }, [elements]);
 
     const updadeElement = (id, x0, y0, clientX, clientY, element) => {
         const changeElement = createElement(
@@ -51,8 +57,7 @@ function App() {
         setElements(elementsCopy, true);
     };
 
-    const startDrawing = (event) => {
-        const { clientX, clientY } = event;
+    const startDrawing = (clientX, clientY) => {
         if (elementType === "select") {
             const element = getElementAtPosition(clientX, clientY, elements);
             if (element) {
@@ -81,15 +86,17 @@ function App() {
         }
     };
 
-    const drawing = (event) => {
+    const onMouseDown = (event) => {
         const { clientX, clientY } = event;
-        if (elementType === "select") {
-            const element = getElementAtPosition(clientX, clientY, elements);
-            event.target.style.cursor = element
-                ? cursorCoordenates(element.position)
-                : "default";
-        }
+        startDrawing(clientX, clientY);
+    };
 
+    const onTouchStart = (event) => {
+        const { clientX, clientY } = event.touches[0];
+        startDrawing(clientX, clientY);
+    };
+
+    const drawing = (clientX, clientY) => {
         if (action === "drawing") {
             const index = elements.length - 1;
             const { x0, y0 } = elements[index];
@@ -122,6 +129,16 @@ function App() {
         }
     };
 
+    const onMouseMove = (event) => {
+        const { clientX, clientY } = event;
+        drawing(clientX, clientY);
+    };
+
+    const onTouchMove = (event) => {
+        const { clientX, clientY } = event.touches[0];
+        drawing(clientX, clientY);
+    };
+
     const finishDrawing = () => {
         if (!selectedElement) return;
         const index = selectedElement.id;
@@ -137,6 +154,14 @@ function App() {
         setSelectedElement(null);
     };
 
+    const onMouseUp = () => {
+        finishDrawing();
+    };
+
+    const onTouchEnd = () => {
+        finishDrawing();
+    };
+
     const userChoice = (element) => {
         switch (element) {
             case "rectangle":
@@ -150,7 +175,7 @@ function App() {
             case "select":
                 return setElementType("select");
             case "line":
-                setTool("line")
+                setTool("line");
                 setElementType("");
                 break;
             default:
@@ -191,19 +216,19 @@ function App() {
                 >
                     <GrSelect />
                 </section>
-                <section
-                    className="menu-button"
-                    onClick={clear}
-                >
+                <section className="menu-button" onClick={clear}>
                     <FaTrashAlt />
                 </section>
             </div>
             <canvas
                 className="canvas"
                 ref={canvasRef}
-                onMouseDown={startDrawing}
-                onMouseMove={drawing}
-                onMouseUp={finishDrawing}
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
             ></canvas>
         </>
     );
