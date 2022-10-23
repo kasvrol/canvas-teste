@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/tela-de-desenho/static/css/main.73c64db9.css",
+    "main.js": "/tela-de-desenho/static/js/main.33e16487.js",
+    "index.html": "/tela-de-desenho/index.html",
+    "main.73c64db9.css.map": "/tela-de-desenho/static/css/main.73c64db9.css.map",
+    "main.33e16487.js.map": "/tela-de-desenho/static/js/main.33e16487.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.73c64db9.css",
+    "static/js/main.33e16487.js"
+  ]
+}
